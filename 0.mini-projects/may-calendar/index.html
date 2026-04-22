@@ -1,74 +1,104 @@
 <html>
     <head>
         <title>포토 캘린더</title>
+
+        <style>
+            body {
+                text-align: center;
+            }
+            #calender {
+                width: 100%;
+                border: 1px solid black;
+                border-collapse: collapse;
+            }
+            #calender th {
+                width: 14%;
+                padding: 18px;
+                background-color: #dadada;
+            }
+            #calender td {
+                text-align: center;
+                padding: 10px;
+                border: 1px solid black;
+            }
+            #calender tr > *:first-child {
+                color: red;
+            }
+            #calender tr > *:last-child {
+                color: blue;
+            }
+            img {
+                width: 30%;
+            }
+        </style>
     </head>
     <body>
         <h1>포토 캘린더</h1>
         <h2>2026년 5월</h2>
-        <img src="CSS.images/salt.jpg" width="50%">
+        <img src="images/salt.jpg">
 
-        <table border="2" width = "50%">
-            <th width="14%" style="color: red;">Sun</th>
-            <th width="14%">Mon</th>
-            <th width="14%">Tue</th>
-            <th width="14%">Wed</th>
-            <th width="14%">Tue</th>
-            <th width="14%">Fri</th>
-            <th width="14%"style="color: blue;">Sat</th>
+        <table id="calender">
+            <th>Sun</th>
+            <th>Mon</th>
+            <th>Tue</th>
+            <th>Wed</th>
+            <th>Tue</th>
+            <th>Fri</th>
+            <th>Sat</th>
 
             <tr>
-                <td style="color: red;"></td>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
                 <td>1</td>
-                <td style="color: blue;">2</td>
+                <td>2</td>
             </tr>
             <tr>
-                <td style="color: red;">3</td>
+                <td>3</td>
                 <td>4</td>
                 <td>5</td>
                 <td>6</td>
                 <td>7</td>
                 <td>8</td>
-                <td style="color: blue;">9</td>
+                <td>9</td>
             </tr>
             <tr>
-                <td style="color: red;">10</td>
+                <td>10</td>
                 <td>11</td>
                 <td>12</td>
                 <td>13</td>
                 <td>14</td>
                 <td>15</td>
-                <td style="color: blue;">16</td>
+                <td>16</td>
             </tr>
             <tr>
-                <td style="color: red;">17</td>
+                <td>17</td>
                 <td>18</td>
                 <td>19</td>
                 <td>20</td>
                 <td>21</td>
                 <td>22</td>
-                <td style="color: blue;">23</td>
+                <td>23</td>
             </tr>
             <tr>
-                <td style="color: red;">24</td>
+                <td>24</td>
                 <td>25</td>
                 <td>26</td>
                 <td>27</td>
                 <td>28</td>
                 <td>29</td>
-                <td style="color: blue;">30</td>
+                <td>30</td>
             </tr>
             <tr>
-                <td style="color: red;">31</td>
+                <td>31</td>
                 <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
-                <td style="color: blue;"></td>
+                <td></td>
             </tr>
         </table>
  
