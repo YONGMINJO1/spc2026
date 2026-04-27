@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>showhide</title>
+    <style>
+        #mydiv {
+            display: none;
+            width: 200px;
+            height: 200px;
+            background-color: lightsalmon;
+        }
+
+        .show {
+            display: block !important;
+        }
+    </style>
+</head>
+<body>
+    <h1>Show / Hide </h1>
+    <button onclick="showhide_toggle()">숨겨진 요소 토클</button>
+    <div id="mydiv">이건 숨겨진 div 요소 입니다.</div>
+    <script>
+        function showhide_toggle(){
+            const div = document.querySelector('#mydiv');
+            div.classList.toggle('show');
+            };
+    </script>
+</body>
+</html>

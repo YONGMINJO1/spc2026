@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <h1>나의 헤딩</h1>
+    <p>여기는 나의 문장이 있는 곳</p>
+    <div id="output"><!-- 여기는 동적으로 컨텐츠를 채울 곳 --></div>
+    <p class="text">여기는 나의 두번재 문장이 있는 곳</p>
+    <button onclick="sayhello4()">여기는 나의 버튼</button>
+    <script>
+        function sayhello() {
+            console.log("sayhello");
+            const myoutput = document.getElementById('output');
+            console.log(myoutput);
+            myoutput.textContent = "나의 새로운 동적 문장"
+        }
+        
+        function sayhello2() {
+            // getElenemts <-- 복수형을 기억
+            console.log("sayhello");
+            const myoutput = document.getElementsByTagName('div');
+            console.log(myoutput[0]);// 해당 DOM들의 (즉 해당 요소 P들의) 1번째
+            myoutput[0].textContent = "나의 새로운 동적 문장2";
+        }
+
+        function sayhello3() {
+            console.log("sayhello");
+            const myoutput = document.getElementsByTagName('p');
+            console.log(myoutput[1]);// 해당 DOM들의 (즉 해당 요소 P들의) 2번째
+            myoutput[1].textContent = "나의 새로운 동적 문장2";
+        }
+        
+        function sayhello4() {
+            console.log("sayhello");
+            const myoutput = document.getElementsByClassName('text');
+            console.log(myoutput); // 해당 DOM들의 (즉 해당 요소 P들의) 2번째
+            console.log(myoutput[0]);
+            console.log(myoutput[1]);
+            myoutput[0].textContent = "나의 새로운 동적 문장2"
+        }
+    </script>
+</body>
+</html>

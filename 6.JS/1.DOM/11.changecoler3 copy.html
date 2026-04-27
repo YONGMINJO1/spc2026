@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <h1 id="text">색상 변경 버튼</h1>
+    <button onclick="changeColor()">색상 변경</button>
+
+    <script>
+
+        function changeColor() {
+            const r = Math.floor(Math.random() * 255);
+            const g = Math.floor(Math.random() * 255);
+            const b = Math.floor(Math.random() * 255);
+
+            //hex 로 바꾸기
+            const rHex = r.toString(16).padStart(2.0); // 2두자리가 나와야
+            const gHex = g.toString(16).padStart(2.0); // 2두자리가 나와야
+            const bHex = b.toString(16).padStart(2.0); // 2두자리가 나와야
+
+            const finalColor = '#' + rHex + gHex + bHex;
+            console.log(finalColor);
+            // 방법이 여러개임
+            // `#${rHex}{gHex}{bHex}`;
+            // 'rgba(${r}${g}${b})';
+            
+
+            document.body.style.backgroundColor = finalColor;
+        }
+    </script>
+</body>
+</html>
