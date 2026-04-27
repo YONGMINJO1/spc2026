@@ -1,30 +1,30 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <title>Document</title>
-</head>
-<body>
-    <h1>버튼 2개</h1>
-    <div id="counter">0</div> 
-    <div>
-        <button onclick="increase()">+1</button>
-        <button onclick="decrease()">-1</button>
-    </div>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Document</title>
+    </head>
+    <body>
+        <h1>버튼 2개</h1>
+        <div id="counter">0</div>
+        <div>
+            <button onclick="increase()">+1</button>
+            <button onclick="decrease()">-1</button>
+        </div>
 
-    <script>
-        // 각자의 버튼이 눌릴때마다 위에 div의 값을 가져다가 +1 또는 -1
-        function increase () {
-            const counter = document.getElementById('counter');
-            let value = parseInt(counter.textContent);
-            counter.textContent = value + 1;
-        }
+        <script>
+            // 각자의 버튼이 눌릴때마다 위에 div의 값을 가져다가 +1 또는 -1
+            function increase() {
+                const counter = document.getElementById('counter');
+                let value = parseInt(counter.textContent);
+                counter.textContent = value + 1;
+            }
 
-        function decrease () {
-            const counter  = document.getElementByIdz('counter');
-            let value = parseInt(counter.textContent);
-            counter.textContent = value - 1;
-        } 
-    </script>
-</body>
+            function decrease() {
+                const counter = document.getElementById('counter');
+                let value = parseInt(counter.textContent);
+                counter.textContent = value - 1;
+            }
+        </script>
+    </body>
 </html>
