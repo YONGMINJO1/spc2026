@@ -1,24 +1,25 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <title>Document</title>
-</head>
-<body>
-    <h1 id="text">색상 변경 버튼</h1>
-    <button onclick="changeColor()">색상 변경</button>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Document</title>
+    </head>
+    <body>
+        <h1 id="text">색상 변경 버튼</h1>
+        <button onclick="changeColor()">색상 변경</button>
 
-    <script>
-        const colors = ["red","blue","green","orange","yellow"];
-        let index = 0;
-        function changeColor() {
-            //console.log("버튼 클릭");
-            document.body.style.backgroundColor = colors[index++];
-            // if(index > 2) {
-            //     index = 0;
-            // }
-            index = (index + 1) % colors.length;
-        }
-    </script>
-</body>
+        <script>
+            // 버튼을 누를 때마다 red -> blue -> green -> red 순 ...
+            const colors = ['red', 'blue', 'green', 'orange', 'yellow'];
+            let index = 0;
+            function changeColor() {
+                //console.log("버튼 클릭");
+                document.body.style.backgroundColor = colors[index++];
+                // if(index > 2) {
+                //     index = 0;
+                // }
+                index = (index + 1) % colors.length;
+            }
+        </script>
+    </body>
 </html>

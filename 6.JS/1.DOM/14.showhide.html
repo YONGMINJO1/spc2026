@@ -1,56 +1,57 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <title>showhide</title>
-    <style>
-        #mydiv {
-            display: none;
-            width: 200px;
-            height: 200px;
-            background-color: lightsalmon;
-        }
-    </style>
-</head>
-<body>
-    <h1>Show / Hide </h1>
-    <button onclick="showhide()">숨겨진 요소 토클</button>
-    <div id="mydiv">이건 숨겨진 div 요소 입니다.</div>
-    <script>
-        function showhide_withbug(){
-            const div = document.querySelector('#mydiv');
-            //const current = window.getComputedStyle(div).display;
-
-            if(div.style.display === 'none'){
-                div.style.display = 'block';
-            } else {
-                div.style.display = 'none';
-            };
-        }
-
-        function showhide2_bugfix1(){
-            //순서로 해결 -
-            const div = document.querySelector('#mydiv');
-            //const current = window.getComputedStyle(div).display;
-
-            if(div.style.display === 'block'){
-                div.style.display = 'none';
-            } else {
-                div.style.display = 'block';
-            };
-        }
-
-        function showhide3_bugfix2(){
-            const div = document.querySelector('#mydiv');
-
-            const displayStyle = window.getComputedStyle(div).display;
-
-            if (displayStyle == 'none'){
-                div.style.display = 'block';
-            } else {
-                div.style.display = 'none';
+    <head>
+        <meta charset="UTF-8" />
+        <title>showhide</title>
+        <style>
+            #mydiv {
+                display: none;
+                width: 200px;
+                height: 200px;
+                background-color: lightsalmon;
             }
-        }
-    </script>
-</body>
+        </style>
+    </head>
+    <body>
+        <h1>Show / Hide</h1>
+        <button onclick="showhide3_bugfix2()">숨겨진 요소 토클</button>
+        <div id="mydiv">이건 숨겨진 div 요소 입니다.</div>
+        <script>
+            function showhide_withbug() {
+                // 문제의 원인은 DOM에는 css 내용이 들어가지 않음
+                const div = document.querySelector('#mydiv');
+                //const current = window.getComputedStyle(div).display;
+
+                if (div.style.display === 'none') {
+                    div.style.display = 'block';
+                } else {
+                    div.style.display = 'none';
+                }
+            }
+
+            function showhide2_bugfix1() {
+                // 적용되는 순서로 해결 -
+                const div = document.querySelector('#mydiv');
+                //const current = window.getComputedStyle(div).display;
+
+                if (div.style.display === 'block') {
+                    div.style.display = 'none';
+                } else {
+                    div.style.display = 'block';
+                }
+            }
+
+            function showhide3_bugfix2() {
+                // 실제 style까지 적용된 결과로 연산
+                const div = document.querySelector('#mydiv');
+                const displayStyle = window.getComputedStyle(div).display;
+
+                if (displayStyle == 'none') {
+                    div.style.display = 'block';
+                } else {
+                    div.style.display = 'none';
+                }
+            }
+        </script>
+    </body>
 </html>

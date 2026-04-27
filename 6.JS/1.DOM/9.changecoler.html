@@ -1,36 +1,36 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <title>Document</title>
-</head>
-<body>
-    <h1 id="text">색상 변경 버튼</h1>
-    <button onclick="changeColor1()">색상 변경</button>
-    <button onclick="changeColor2()">색상 변경</button>
-    <button onclick="changeColor()">색상 변경</button>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Document</title>
+    </head>
+    <body>
+        <h1 id="text">색상 변경 버튼</h1>
+        <!-- <button onclick="changeColor1()">색상 변경</button>
+        <button onclick="changeColor2()">색상 변경</button> -->
+        <button onclick="changeColor()">색상 변경</button>
 
-    <script>
-        // 이거 처음을 클릭해서 왜 두번 클릭해야하는지
-        // F12 개발자 도구에서 Elements 켜놓고 다버깅 하기
-        // 아래 논리 구조를 다양하게 변경하면서 지켜보기
-        function changeColor1 () {
-            // const heading = document.getElementById("text");
-            // heading.style.color = red;
-            document.body.style.backgroundColor = 'red';
-        }
+        <script>
+            // 1. 이거 처음을 클릭해서 왜 두번 클릭해야 빨간색이 되는지 살펴보기
+            // 2. F12 개발자 도구에서 Elements 켜놓고 지켜보면서 디버깅 하기
+            // 3. 아래 논리 구조를 다양하게 변경하면서 이 문제 해결하기
+            // function changeColor1() {
+            //     // const heading = document.getElementById("text");
+            //     // heading.style.color = red;
+            //     document.body.style.backgroundColor = 'red';
+            // }
 
-        function changeColor2() {
-            document.body.style.backgroundColor = 'white';
-        }
+            // function changeColor2() {
+            //     document.body.style.backgroundColor = 'white';
+            // }
 
-        function changeColor() {
-            if(document.body.style.backgroundColor === 'red'){
-                document.body.style.backgroundColor = 'white';
-            } else {
-                document.body.style.backgroundColor = 'red';
+            function changeColor() {
+                if (document.body.style.backgroundColor === 'red') {
+                    document.body.style.backgroundColor = 'white';
+                } else {
+                    document.body.style.backgroundColor = 'red';
+                }
             }
-        }
-    </script>
-</body>
+        </script>
+    </body>
 </html>
