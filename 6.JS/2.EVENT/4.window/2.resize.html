@@ -3,6 +3,15 @@
     <head>
         <meta charset="UTF-8" />
         <title>Resize Event Example</title>
+        <style>
+            #sizeInfo {
+                font-size: 10px;
+                line-height: 1.6;
+                background-color: #f0f0f0;
+                padding: 15px;
+                border-radius: 20px;
+            }
+        </style>
     </head>
     <body>
         <h1>당신의 화면 정보는 다음과 같습니다.</h1>
@@ -20,7 +29,7 @@
                 const screenHeight = screen.height;
 
                 sizeInfo.innerHTML = `
-                    <strong>Viewport (window.inner)</strong><br>
+                    <strong>뷰포트 (window.inner)</strong><br>
                     Width: ${innerWidth}px<br>
                     Height: ${innerHeight}px<br><br>
 
@@ -34,7 +43,11 @@
                 `;
             }
 
-            updateSizeInfo();
+            window.addEventListener('load', () => {
+                /// 타이밍 이슈 (타이밍 버그)
+                setTimeout(updateSizeInfo, 50); // 50ms 딜레이를 통해서 브라우저의 랜더러가 올바르게 초기화가 된 이후에.. 계산
+            });
+            // updateWindowInfo(); // 화면 최초 로딩시에 표시하기 위해서 1회 수동 호출
 
             window.addEventListener('resize', updateSizeInfo);
         </script>

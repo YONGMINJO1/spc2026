@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="ko">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -23,18 +23,25 @@
         </div>
         <script>
             const dropZone = document.getElementById('dropZone');
-            const fileName = document.getElementById('fileName');
+            const fileName = document.getElementById('fileNames');
 
-            dropZone.addEventListener('dragover', function (event) {
-                event.preventDefault();
+            // 위에 파일이 올라갔을때
+            dropZone.addEventListener('dragover', (ev) => {
+                ev.preventDefault();
                 dropZone.style.backgroundColor = '#e0e0e0';
             });
 
-            dropZone.addEventListener('drop', function (event) {
-                event.preventDefault();
+            // 다시 나갔을때
+            dropZone.addEventListener('dragleave', (ev) => {
+                ev.preventDefault();
                 dropZone.style.backgroundColor = '#f9f9f9';
+            });
 
-                const files = event.dataTransfer.files;
+            dropZone.addEventListener('drop', (ev) => {
+                ev.preventDefault();
+                dropZone.style.backgroundColor = '#6bff6b';
+
+                const files = ev.dataTransfer.files;
 
                 if (files.length > 0) {
                     for (let i = 0; i < files.length; i++) {

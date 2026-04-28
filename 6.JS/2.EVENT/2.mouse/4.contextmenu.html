@@ -22,6 +22,9 @@
                     console.log('우클릭 성공함');
                 });
 
+            // 위에는 특정 요소만 막기
+            // 아래는 페이지 모든 것 막기
+
             document.addEventListener('contextmeun', (ev) => {
                 ev.preventDefault();
                 alert('우리 사이트는 우클릭이 막혀 있습니다.');

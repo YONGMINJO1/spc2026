@@ -36,9 +36,27 @@
                         case 2:
                             console.log('오른쪽 버튼 눌림');
                             break;
-                        case 3:
-                            console.log('모르는 버튼 눌림');
+                        default:
+                            console.log('뭔지 모르는 버튼 눌림', event.button);
+                    }
+                });
+            document
+                .getElementById('myButton')
+                .addEventListener('mouseup', (event) => {
+                    console.log('버튼 눌림', event);
+
+                    switch (event.button) {
+                        case 0: // 왼쪽 버튼
+                            console.log('왼쪽 버튼 눌림');
                             break;
+                        case 1: // 미들 버튼
+                            console.log('가운데 버튼 눌림');
+                            break;
+                        case 2: // 우클릭
+                            console.log('오른쪽 버튼 눌림');
+                            break;
+                        default:
+                            console.log('뭔지모르는 버튼 눌림: ', event.button);
                     }
                 });
         </script>

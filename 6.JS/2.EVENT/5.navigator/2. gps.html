@@ -7,7 +7,7 @@
     </head>
     <body>
         <h1>브라우저 정보</h1>
-        <p>GPS정보: <span id="geo"></span></p>
+        <p>GPS 좌표: <span id="geo"></span></p>
         <button id="getLocation">위치 정보 조회</button>
         <p id="location"></p>
 
@@ -15,8 +15,11 @@
             document
                 .getElementById('getLocation')
                 .addEventListener('click', () => {
-                    if (navigator.geolocation) {
-                    }
+                    navigator.geolocation.getCurrentPosition((position) => {
+                        const { latitude, longitude } = position.coords;
+                        document.getElementById('geo').textContent =
+                            `위도: ${latitude}, 경도: ${longitude}`;
+                    });
                 });
         </script>
     </body>

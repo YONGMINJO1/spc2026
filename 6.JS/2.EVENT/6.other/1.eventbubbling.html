@@ -30,19 +30,24 @@
         <script>
             //이벤트 버블링: 나의 이벤트가 부모 요소에게 전달되는 현상
 
+            // 1. 캡처링: window → document → html → body → outer → inner → target
+            // 2. 타겟: target
+            // 3. 버블링: target → inner → outer → body → html → document → window
+
             document.addEventListener('DOMContentLoaded', (event) => {
                 const child = document.getElementById('child');
                 const parent = document.getElementById('parent');
                 const grandparent = document.getElementById('grandparent');
 
-                child.addEventListener('click', () => {
-                    alert('Child Cliked');
+                child.addEventListener('click', (ev) => {
+                    alert('Child 클릭됨');
+                    ev.stopPropagation();
                 });
                 parent.addEventListener('click', () => {
-                    alert('Parent Cilcked');
+                    alert('Parent 클릭됨');
                 });
                 grandparent.addEventListener('click', () => {
-                    alert('Grandparent Clicked');
+                    alert('Grandparent 클릭됨');
                 });
             });
         </script>

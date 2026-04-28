@@ -1,20 +1,24 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Document</title>
-</head>
-<body>
-    <form id="myForm" action="/submit" method="post">
-        <textarea id="myTextarea" rows="10" cols="30"></textarea>
-        <br>
-        <button type="submit"> submit</button>
-    </form>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Document</title>
+    </head>
+    <body>
+        <form id="myForm" action="/submit" method="post">
+            <textarea id="myTextarea" rows="10" cols="30"></textarea>
+            <br />
+            <button type="submit">submit</button>
+        </form>
 
-    <script>
-    document.getElementById('myTextarea').addEventListener('keydown', function () {
-        
-    })
-    </script>
-</body>
+        <script>
+            document
+                .getElementById('myTextarea')
+                .addEventListener('keydown', (event) => {
+                    if (event.shiftKey && event.key === 'Enter') {
+                        document.getElementById('myForm').submit();
+                    }
+                });
+        </script>
+    </body>
 </html>

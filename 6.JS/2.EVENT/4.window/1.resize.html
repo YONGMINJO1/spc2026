@@ -1,17 +1,18 @@
 <!doctype html>
-<html lang="en">
+<html lang="ko">
     <head>
         <meta charset="UTF-8" />
         <title>Resize Event Example</title>
     </head>
     <body>
         <script>
-            window.addEventListener('resize', function () {
-                console.log('Window resized!');
+            window.addEventListener('resize', (ev) => {
+                // console.log('Window resized!');
 
-                // const width = window.innerWidth;
-                // const height = window.innerHeight;
-                // console.log('Window resized to: ' + width + 'x' + height);
+                const width = window.innerWidth;
+                const height = window.innerHeight;
+
+                console.log(`창 크기가 바꼈음: x=${width}, y=${height}`);
             });
 
             // window.resizeTo(800, 600); // 사용자 보호 차원으로 내창 크기 변경은 막힘 (새창만 가능)

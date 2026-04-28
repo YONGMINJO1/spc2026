@@ -10,7 +10,13 @@
             document
                 .getElementById('myInput')
                 .addEventListener('keydown', (ev) => {
-                    console.log(`Key pressed: ${event.key}`);
+                    console.log(`Key pressed: ${ev.key}`);
+                });
+
+            document
+                .getElementById('myInput')
+                .addEventListener('keyup', (ev) => {
+                    console.log(`Key pressed: ${ev.key}`);
                 });
         </script>
     </body>

@@ -34,9 +34,9 @@
         </style>
     </head>
     <body>
-        <div>
+        <div id="startZone" class="dropContainer">
             <span class="placeholder" id="startplaceholder">Drag Here</span>
-            <div class="dragItem" draggable="true">Drag me</div>
+            <div id="dragItem" draggable="true">Drag me</div>
         </div>
 
         <div id="dropZone" class="dropContainer">
@@ -45,18 +45,33 @@
 
         <script>
             const dragItem = document.getElementById('dragItem');
-            const dragZone = document.getElementById('dragZone');
+            const dropZone = document.getElementById('dropZone');
             const startZone = document.getElementById('startZone');
 
             dragItem.addEventListener('dragstart', () => {
                 console.log('drag Started');
             });
-            dragZone.addEventListener('dragZone', () => {
-                console.log('drag Zone');
+
+            [startZone, dropZone].forEach((zone) => {
+                zone.addEventListener('dragover', (ev) => {
+                    ev.preventDefault();
+                    console.log('위에 있음');
+                });
             });
-            startZone.addEventListener('startZone', () => {
-                console.log('Start Zone');
+
+            [startZone, dropZone].forEach((zone) => {
+                zone.addEventListener('drop', (ev) => {
+                    ev.preventDefault();
+                    console.log('위에 있음');
+                    zone.append(dragItem);
+                });
             });
+            // dragZone.addEventListener('dragZone', () => {
+            //     console.log('drag Zone');
+            // });
+            // startZone.addEventListener('startZone', () => {
+            //     console.log('Start Zone');
+            // });
         </script>
     </body>
 </html>

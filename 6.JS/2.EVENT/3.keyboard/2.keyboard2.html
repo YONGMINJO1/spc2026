@@ -14,14 +14,13 @@
     </head>
     <body>
         <input type="text" id="myInput" placeholder="키를 입력하세요" />
-        <div id="displayKey"></div>
+        <div id="displayKey"><!-- 눌린키를 표시할곳 --></div>
         <script>
+            const displayKeyElement = document.getElementById('displayKey');
             document
                 .getElementById('myInput')
                 .addEventListener('keydown', (ev) => {
-                    const displayKeyElement =
-                        document.getElementById('displayKey');
-                    displayKeyElement.textContent = event.key;
+                    displayKeyElement.textContent = ev.key;
                 });
         </script>
     </body>
