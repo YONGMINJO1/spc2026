@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <title>5 Words Hangman</title>
+    </head>
+    <body>
+        <h1>5 Words Hangman</h1>
+
+        <!-- 단어 표시: _ _ _ _ _ -->
+        <div id="wordDisplay"><!-- JS --></div>
+
+        <!-- 남은 기회 -->
+        <p>남은 기회: <span id="lives">6</span></p>
+
+        <!-- 사용한 글자 -->
+        <p>사용한 글자: <span id="usedLetters"></span></p>
+
+        <!-- 입력 -->
+        <input type="text" id="letterInput" maxlength="1" />
+        <button id="guessButton">글자 맞추기</button>
+        <button id="newGameButton">새 게임</button>
+
+        <!-- 메시지 -->
+        <p id="message">알파벳 한 글자씩 맞춰보세요!</p>
+
+        <script src="hangman.js"></script>
+    </body>
+</html>
