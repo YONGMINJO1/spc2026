@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Document</title>
+    </head>
+    <body>
+        <input type="text" id="myInput" placeholder="키를 입력하세요" />
+        <script>
+            document
+                .getElementById('myInput')
+                .addEventListener('keydown', (ev) => {
+                    console.log(`Key pressed: ${event.key}`);
+                });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            #dropZone {
+                width: 300px;
+                height: 200px;
+                border: 2px dashed #cccccc;
+                align-items: center;
+                display: flex;
+                justify-content: center;
+                background-color: beige;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="dropZone">여기에 파일을 드레그 하세요</div>
+        <div id="fileList">
+            <h3>드롭된 파일 목록:</h3>
+        </div>
+        <script>
+            const dropZone = document.getElementById('dropZone');
+            const fileName = document.getElementById('fileName');
+
+            dropZone.addEventListener('dragover', function (event) {
+                event.preventDefault();
+                dropZone.style.backgroundColor = '#e0e0e0';
+            });
+
+            dropZone.addEventListener('drop', function (event) {
+                event.preventDefault();
+                dropZone.style.backgroundColor = '#f9f9f9';
+
+                const files = event.dataTransfer.files;
+
+                if (files.length > 0) {
+                    for (let i = 0; i < files.length; i++) {
+                        const li = document.createElement('li');
+                        li.textContent = files[i].name;
+                        fileName.append(li);
+                    }
+                }
+            });
+
+            // forEach 버전으로 구현
+            // Array.from(files).forEach(file => {
+            //     const li = document.createElement('li');
+            //     li.textContent = file.name;
+            //     fileNames.appendChild(li);
+            // });
+
+            // 스프레드 문법(...) 으로 구현
+            // [...files].forEach(file => {
+            //     const li = document.createElement('li');
+            //     li.textContent = file.name;
+            //     fileNames.appendChild(li);
+            // });
+        </script>
+    </body>
+</html>

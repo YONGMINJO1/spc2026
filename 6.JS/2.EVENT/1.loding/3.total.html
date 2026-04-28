@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <title >Document</title>
+        <script>
+            console.log('0. 나는 헤더이 있는 스크립트 블력');
+        </script>
+    </head>
+    <body>
+        <script>
+            console.log('1. 나는 body 바로 아래 있는 스크립트');
+        </script>
+
+        <h1 id="title">마이 타이틀</h1>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                console.log('4. DOM 로딩 완료');
+            });
+
+            window.onload = function () {
+                console.log(
+                    '5. 모든 리소스 ( html / css / js / img) 다 로딩 완료됨',
+                );
+            };
+        </script>
+
+        <script>
+            console.log('3. 나는 맨 아래 있는 스크립트');
+        </script>
+    </body>
+</html>

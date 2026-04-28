@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Document</title>
+        <style>
+            #grandparent {
+                padding: 50px;
+                background-color: lightgray;
+            }
+            #parent {
+                padding: 50px;
+                background-color: lightblue;
+            }
+            #child {
+                padding: 50px;
+                background-color: lightgreen;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="grandparent">
+            Grandparent
+            <div id="parent">
+                Parent
+                <div id="child">Child</div>
+            </div>
+        </div>
+
+        <script>
+            //이벤트 버블링: 나의 이벤트가 부모 요소에게 전달되는 현상
+
+            document.addEventListener('DOMContentLoaded', (event) => {
+                const child = document.getElementById('child');
+                const parent = document.getElementById('parent');
+                const grandparent = document.getElementById('grandparent');
+
+                child.addEventListener('click', () => {
+                    alert('Child Cliked');
+                });
+                parent.addEventListener('click', () => {
+                    alert('Parent Cilcked');
+                });
+                grandparent.addEventListener('click', () => {
+                    alert('Grandparent Clicked');
+                });
+            });
+        </script>
+    </body>
+</html>

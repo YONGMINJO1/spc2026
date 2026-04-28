@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Document</title>
+        <style></style>
+    </head>
+    <body>
+        <h1>Image Gallery</h1>
+        <div class="gallery">
+            <img src="" alt="" />
+            <img src="" alt="" />
+            <img src="" alt="" />
+            <img src="" alt="" />
+        </div>
+
+        <img id="large-image" src="" alt="" />
+
+        <script>
+            const img1 = document.getElementById('img1');
+            const img2 = document.getElementById('img2');
+            const img3 = document.getElementById('img3');
+
+            img1.addEventListener('click', () => {
+                const largeImage = document.getElementById('large-image');
+                largeImage.src = img1.src;
+                largeImage.style.display = 'block';
+            });
+            img2.addEventListener('click', () => {
+                const largeImage = document.getElementById('large-image');
+                largeImage.src = img2.src;
+                largeImage.style.display = 'block';
+            });
+            img3.addEventListener('click', () => {
+                const largeImage = document.getElementById('large-image');
+                largeImage.src = img3.src;
+                largeImage.style.display = 'block';
+            });
+        </script>
+    </body>
+</html>

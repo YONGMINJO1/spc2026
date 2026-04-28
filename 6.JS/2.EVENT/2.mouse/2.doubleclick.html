@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Document</title>
+    </head>
+    <body>
+        <button id="mybutton">클릭하세요</button>
+        <script>
+            // 1. DOM요소 가져온다. 2.이벤트를 붙인다. 3.핸들러를 구현한다.
+            const button = document.getElementById('mybutton');
+            button.addEventListener('click', () => {
+                console.log('클릭 ok');
+            });
+
+            document
+                .getElementById('mybutton')
+                .addEventListener('click', () => {
+                    console.log('더블클릭 ok');
+                });
+        </script>
+    </body>
+</html>

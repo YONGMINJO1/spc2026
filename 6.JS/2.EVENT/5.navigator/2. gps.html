@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <h1>브라우저 정보</h1>
+        <p>GPS정보: <span id="geo"></span></p>
+        <button id="getLocation">위치 정보 조회</button>
+        <p id="location"></p>
+
+        <script>
+            document
+                .getElementById('getLocation')
+                .addEventListener('click', () => {
+                    if (navigator.geolocation) {
+                    }
+                });
+        </script>
+    </body>
+</html>

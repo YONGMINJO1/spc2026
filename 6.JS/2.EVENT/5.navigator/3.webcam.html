@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <h1>웹캠 접근하기</h1>
+        <video id="webcom"></video>
+        <p id="error"></p>
+
+        <script>
+            const video = document.getElementById('webcam');
+            const error = document.getElementById('error');
+
+            navigator.mediaDevices
+                .getUserMedia({ video: true })
+                .then((steam) => {
+                    video.srcObject = steam;
+                })
+                .catch((error) => {
+                    (error) => {
+                        error.textContent = `Error accessing webcam: ${error.message}`;
+                    };
+                });
+        </script>
+    </body>
+</html>

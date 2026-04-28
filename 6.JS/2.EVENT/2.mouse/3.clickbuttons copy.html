@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Document</title>
+        <style>
+            #mybutton {
+                width: 100px;
+                height: 100px;
+                background-color: lightblue;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="mybutton">클릭하세요</div>
+        <script>
+            // 1. DOM요소 가져온다. 2.이벤트를 붙인다. 3.핸들러를 구현한다.
+            // document
+            //     .getElementById('mybutton')
+            //     .addEventListener('click', () => {
+            //         console.log('더블클릭 ok');
+            //     });
+
+            document
+                .getElementById('mybutton')
+                .addEventListener('mousedown', (event) => {
+                    console.log('버튼눌림', event);
+                    switch (event.button) {
+                        case 0:
+                            console.log('왼쪽버튼 눌림');
+                            break;
+                        case 1:
+                            console.log('가운데 버튼 눌림');
+                            break;
+                        case 2:
+                            console.log('오른쪽 버튼 눌림');
+                            break;
+                        case 3:
+                            console.log('모르는 버튼 눌림');
+                            break;
+                    }
+                });
+        </script>
+    </body>
+</html>

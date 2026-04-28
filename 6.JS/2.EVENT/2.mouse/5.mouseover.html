@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Document</title>
+        <style>
+            #mybutton {
+                width: 100px;
+                height: 100px;
+                background-color: lightblue;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="mybutton">클릭하세요</div>
+        <script>
+            document
+                .getElementById('mybutton')
+                .addEventListener('mouseover', () => {
+                    console.log('마우스가 올라가 있어요.');
+                });
+
+            document
+                .getElementById('mybutton')
+                .addEventListener('mouseout', () => {
+                    console.log('마우스가 내려가 있어요.');
+                });
+
+            document
+                .getElementById('mybutton')
+                .addEventListener('mousemove', (ev) => {
+                    console.log('마우스 위치 정보: ', ev);
+                });
+        </script>
+    </body>
+</html>
