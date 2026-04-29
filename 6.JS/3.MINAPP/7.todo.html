@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Todo List</title>
+    </head>
+    <body>
+        <h1>오늘 할일 (Todo 리스트)</h1>
+        <input type="text" id="new-todo" placeholder="할일 입력" />
+        <button id="add-todo">추가</button>
+        <ul id="todo-list">
+            <!-- 할일 표시할 곳 -->
+        </ul>
+        <script>
+            // 1단계: 추가 구현
+            // 1. 버튼이 클릭되면...
+            // 2. 거기 값 읽어와서.. ul아래 li 추가하기...
+
+            // 버튼을 누르면 -> input 값을 읽어서 -> li로 추가한다.
+            // 요소 가져오기
+            const input = document.getElementById('new-todo');
+            const addBtn = document.getElementById('add-todo');
+            const list = document.getElementById('todo-list');
+
+            // 이벤트 → 값 → 생성 → 넣기 → 추가
+            addBtn.addEventListener('click', function addTodo() {
+                //console.log('추가버튼 눌림');
+
+                const value = input.value;
+                if (value.trim() === '') {
+                    return;
+                }
+                const li = document.createElement('li');
+
+                li.textContent = value;
+                list.appendChild(li);
+
+                //입력창 클리어 하기
+                input.value = '';
+            });
+
+            //기능 개선 - 엔터
+            document
+                .getElementById('new-todo')
+                .addEventListener('keyboard', (ev) => {
+                    if (ev.key === 'Enter')
+                        document.getElementById('add-todo').click(); // 버튼을 클릭한 액션을 대신 수행
+                });
+
+            // addBtn.addEventListener('click', () => {
+            //     //console.log('추가버튼 눌림');
+
+            //     const value = input.value;
+            //     if (value.trim() === '') {
+            //         return;
+            //     }
+            //     const li = document.createElement('li');
+
+            //     li.textContent = value;
+            //     list.appendChild(li);
+            //     input.value = '';
+            // });
+
+            // 2단계: 완료(done) 구현
+            // 1. li를 클릭해서 완료상태 표시 (css로 strike라인 추가)
+            // 2. 완료 취소 기능 추가 (위의 반대 - 즉 취소하기
+
+            // 3단계: 삭제 구현
+            // 1. 삭제 버튼을 각 항목마다 추가한다
+            // 2. 삭제 버튼으로 해당 요소를 삭제한다
+
+            // 4단계: 디자인 적용해보기
+            // 1. 체크박스?? 휴지통 아이콘?? 등등
+        </script>
+    </body>
+</html>
