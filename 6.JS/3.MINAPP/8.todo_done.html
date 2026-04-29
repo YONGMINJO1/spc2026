@@ -27,41 +27,40 @@
 
             // 버튼을 누르면 -> input 값을 읽어서 -> li로 추가한다.
             // 요소 가져오기
-            const input = document.getElementById('new-todo');
-            const addBtn = document.getElementById('add-todo');
-            const list = document.getElementById('todo-list');
+            //const input = document.getElementById('new-todo');
 
             // 이벤트 → 값 → 생성 → 넣기 → 추가
-            addBtn.addEventListener('click', function addTodo() {
-                //console.log('추가버튼 눌림');
+            document
+                .getElementById('add-todo')
+                .addEventListener('click', () => {
+                    const newTodo = document.getElementById('new-todo').value;
 
-                const value = input.value;
-                if (value.trim() === '') {
-                    return;
-                }
-                const li = document.createElement('li');
+                    if (newTodo.trim() === '') return;
 
-                li.textContent = value;
-                list.appendChild(li);
+                    const new_li = document.createElement('li');
 
-                //입력창 클리어 하기
-                input.value = '';
-            });
+                    new_li.textContent = newTodo;
 
-            // 클릭 이벤트를 나의 li에 걸리
-            new_li.addEventListener('click', () => {
-                // if (new_li.classList.contains('done')) {
-                //     new_li.classList.remove('done');
-                // } else {
-                //     new_li.classList.add('done');
-                // }
-                new_li.classList.add('done');
-            });
+                    // 클릭 이벤트를 나의 li에 걸리
+                    new_li.addEventListener('click', () => {
+                        // if (new_li.classList.contains('done')) {
+                        //     new_li.classList.remove('done');
+                        // } else {
+                        //     new_li.classList.add('done');
+                        // }
+                        new_li.classList.add('done');
+                    });
+                    const todoList = document.getElementById('todo-list');
+                    todoList.appendChild(new_li);
+
+                    // 입력 후 창 클리어
+                    document.getElementById('new-todo').value = '';
+                });
 
             //기능 개선 - 엔터
             document
                 .getElementById('new-todo')
-                .addEventListener('keyboard', (ev) => {
+                .addEventListener('keydown', (ev) => {
                     if (ev.key === 'Enter')
                         document.getElementById('add-todo').click(); // 버튼을 클릭한 액션을 대신 수행
                 });

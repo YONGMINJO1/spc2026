@@ -56,26 +56,30 @@
 
             let index = 0;
 
+            prevBtn.disabled = true;
+
             function show(direction) {
                 imgs[index].classList.remove('active');
-                index += direction;
-                imgs[index].classList.add('active');
 
-                if (index + 1 >= imgs.length) {
-                    nextBtn.disabled = ture;
-                } else {
-                    nextBtn.disabled = false;
-                }
-                if (index - 1 < 0) {
-                    prevBtn.disabled = ture;
-                } else {
-                    prevBtn.disabled = false;
-                }
+                index += direction;
+
+                imgs[index].classList.add('active');
 
                 filename.textContent = imgs[index].src
                     .split('/')
                     .slice(-2)
                     .join('/');
+
+                if (index + 1 >= imgs.length) {
+                    nextBtn.disabled = true;
+                } else {
+                    nextBtn.disabled = false;
+                }
+                if (index - 1 < 0) {
+                    prevBtn.disabled = true;
+                } else {
+                    prevBtn.disabled = false;
+                }
             }
 
             nextBtn.addEventListener('click', () => show(1));
