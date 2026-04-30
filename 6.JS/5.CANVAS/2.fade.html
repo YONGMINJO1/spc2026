@@ -18,52 +18,69 @@
             // 스마일
             context.beginPath();
             context.arc(75, 75, 50, 0, Math.PI * 2);
-            context.moveTo(65, 65);
+            context.moveTo(65, 65); // 어디로 이동했어야 했을까?
 
-            context.arc(60, 65, 5, 0, Math.PI * 2);
+            context.arc(60, 65, 5, 0, Math.PI * 2); // 왼쪽 눈
 
             context.moveTo(95, 65);
-            context.arc(90, 65, 5, 0, Math.PI * 2);
+            context.arc(90, 65, 5, 0, Math.PI * 2); // 오른쪽 눈
 
             context.moveTo(110, 75);
-            context.arc(75, 75, 35, 0, Math.PI);
+            context.arc(75, 75, 35, 0, Math.PI); // 입 (반원) 0, pi
 
             context.stroke(); // 실제로 그리기..
             context.closePath();
 
-            // 팩맨 스마일
+            // 팩맨
             context.beginPath();
 
             context.moveTo(300, 100);
 
-            const startAngle = 0.1 * Math.PI; // 45도
-            const endAngle = 1.9 * Math.PI; // 315도
-            context.arc(300, 100, 50, startAngle, endAngle);
-            //context.lineTo(300, 100); // 입을 마무리...
+            let startAngle = (1 / 4) * Math.PI; // 45도
+            let endAngle = 2 * Math.PI - (1 / 4) * Math.PI; // 315도
+            context.arc(300, 90, 50, startAngle, endAngle);
+            context.lineTo(300, 90);
+
             context.fillStyle = 'yellow';
             context.fill();
+
+            context.stroke();
             context.closePath();
 
-            // 얼굴 그리기
             context.beginPath();
+            context.moveTo(300, 210);
 
-            // 얼굴의 바깥원
-            context.arc(75, 75, 50, 0, Math.PI * 2);
+            startAngle = (1 / 6) * Math.PI;
+            endAngle = 2 * Math.PI - (1 / 6) * Math.PI;
+            context.arc(300, 210, 50, startAngle, endAngle);
+            context.lineTo(300, 210);
 
-            // 얼굴의 입 (반원)
-            context.moveTo(110, 75);
-            context.arc(75, 75, 35, 0, Math.PI);
+            context.fillStyle = 'yellow';
+            context.fill();
 
-            // 왼쪽 눈
-            context.moveTo(65, 65);
-            context.arc(60, 65, 5, 0, Math.PI * 2);
-
-            // 오른쪽 눈
-            context.moveTo(95, 65);
-            context.arc(90, 65, 5, 0, Math.PI * 2);
-
-            context.stroke(); // 실제로 그리기..
+            context.stroke();
             context.closePath();
+
+            // // 얼굴 그리기
+            // context.beginPath();
+
+            // // 얼굴의 바깥원
+            // context.arc(75, 75, 50, 0, Math.PI * 2);
+
+            // // 얼굴의 입 (반원)
+            // context.moveTo(110, 75);
+            // context.arc(75, 75, 35, 0, Math.PI);
+
+            // // 왼쪽 눈
+            // context.moveTo(65, 65);
+            // context.arc(60, 65, 5, 0, Math.PI * 2);
+
+            // // 오른쪽 눈
+            // context.moveTo(95, 65);
+            // context.arc(90, 65, 5, 0, Math.PI * 2);
+
+            // context.stroke(); // 실제로 그리기..
+            // context.closePath();
         </script>
     </body>
 </html>

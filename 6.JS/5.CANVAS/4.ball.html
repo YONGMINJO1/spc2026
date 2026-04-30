@@ -10,45 +10,103 @@
         </style>
     </head>
     <body>
-        <canvas id="myCanvas" width="400" height="300"></canvas>
+        <canvas id="myCanvas" width="400" height="200"></canvas>
 
         <script>
             const canvas = document.getElementById('myCanvas');
             const context = canvas.getContext('2d');
 
-            let x = 50;
-            let y = 50;
-            let radius = 10;
-            let speed = 1;
-            let speedx = speed;
-            let speedy = speed;
+            const ball = {
+                x: 50,
+                y: 50,
+                radius: 10,
+                speed: 1,
+                vx: 1,
+                vy: 1,
 
-            function drawBall() {
-                context.clearRect(0, 0, canvas.width, canvas.height);
-                context.beginPath();
-                context.arc(x, y, radius, 0, Math.PI * 2);
-                context.fillStyle = 'red';
-                context.fill();
-                context.closePath();
+                draw() {
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    context.beginPath();
+                    context.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    context.fillStyle = 'red';
+                    context.fill();
+                    context.closePath();
+                },
+                checkBoundary(position, speed, max) {
+                    if (
+                        position > max - this.radius ||
+                        position < this.radius
+                    ) {
+                        return -speed;
+                    }
+                    return speed;
+                },
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
 
-                x += speedy;
-                y += speedy;
+                    this.vx = this.checkBoundary(this.x, this.vx, canvas.width);
+                    this.vy = this.checkBoundary(
+                        this.y,
+                        this.vy,
+                        canvas.height,
+                    );
 
-                if (y > canvas.height - radius) {
-                    speedy = -spped;
-                }
+                    // // x가 350(캔버스 넓이 - 볼의 반지름) 보다 크면 방향을 바꾼다.
+                    // if (this.x > canvas.width - this.radius) {
+                    //     this.speedx = -this.speed;
+                    // }
+                    // // y가 150 (캔버스 높이 - 볼의 반지름) 보다 크면 방향을 바꾼다.
+                    // if (this.y > canvas.height - this.radius) {
+                    //     this.speedy = -this.speed;
+                    // }
+                    // // 반지름 보다 작아야 캔버스 안에 들어옴 (중심기준)
+                    // if (this.x < 0 + this.radius) {
+                    //     this.speedx = +this.speed;
+                    // }
+                    // // 반지름 보다 작아야 캔버스 안에 들어옴 (중심기준)
+                    // if (this.y < 0 + this.radius) {
+                    //     this.speedy = +this.speed;
+                    // }
+                },
+            };
 
-                if (y < 0 + radius) {
-                    speedy = +spped;
-                }
-
-                if (x < 0 + radius) {
-                    speedx = +spped;
-                }
-
-                requestAnimationFrame(drawBall); // 반복
+            function loop() {
+                ball.update();
+                ball.draw();
+                requestAnimationFrame(loop);
             }
-            drawBall();
+            loop();
+
+            // function drawBall() {
+            //     context.clearRect(0, 0, canvas.width, canvas.height);
+            //     context.beginPath();
+            //     context.arc(x, y, radius, 0, Math.PI * 2);
+            //     context.fillStyle = 'red';
+            //     context.fill();
+            //     context.closePath();
+
+            //     x += speedy;
+            //     y += speedy;
+
+            //     // 공이 y축에 끝에 닿으면?
+            //     if (y > canvas.height - radius) {
+            //         speedy = -speed;
+            //     }
+            //     if (x > canvas.width - radius) {
+            //         speedx = -speed;
+            //     }
+
+            //     if (y < 0 + radius) {
+            //         speedy = +speed;
+            //     }
+
+            //     if (x < 0 + radius) {
+            //         speedx = +speed;
+            //     }
+            //     requestAnimationFrame(drawBall); // 반복
+            // }
+            // drawBall();
 
             // 코드 리펙토링은 각자 생각해서 해보기
         </script>

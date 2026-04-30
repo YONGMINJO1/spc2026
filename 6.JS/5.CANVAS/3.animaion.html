@@ -10,7 +10,7 @@
         </style>
     </head>
     <body>
-        <canvas id="myCanvas" width="400" height="300"></canvas>
+        <canvas id="myCanvas" width="400" height="200"></canvas>
 
         <script>
             const canvas = document.getElementById('myCanvas');
@@ -23,8 +23,8 @@
                 context.fillStyle = '#FF0000';
                 context.fillRect(x, 50, 50, 50);
 
-                x += 5;
-                if (x > 400) {
+                x += 2;
+                if (x > canvas.width) {
                     x = 0;
                 }
                 requestAnimationFrame(draw);
