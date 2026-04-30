@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Document</title>
+        <style>
+            canvas {
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="myCanvas" width="400" height="300"></canvas>
+
+        <script>
+            const canvas = document.getElementById('myCanvas');
+            const context = canvas.getContext('2d');
+
+            let x = 50;
+            let y = 50;
+            let radius = 10;
+            let speed = 1;
+            let speedx = speed;
+            let speedy = speed;
+
+            function drawBall() {
+                context.clearRect(0, 0, canvas.width, canvas.height);
+                context.beginPath();
+                context.arc(x, y, radius, 0, Math.PI * 2);
+                context.fillStyle = 'red';
+                context.fill();
+                context.closePath();
+
+                x += speedy;
+                y += speedy;
+
+                if (y > canvas.height - radius) {
+                    speedy = -spped;
+                }
+
+                if (y < 0 + radius) {
+                    speedy = +spped;
+                }
+
+                if (x < 0 + radius) {
+                    speedx = +spped;
+                }
+
+                requestAnimationFrame(drawBall); // 반복
+            }
+            drawBall();
+
+            // 코드 리펙토링은 각자 생각해서 해보기
+        </script>
+    </body>
+</html>

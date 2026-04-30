@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Document</title>
+        <style>
+            canvas {
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="myCanvas" width="400" height="300"></canvas>
+
+        <script>
+            const canvas = document.getElementById('myCanvas');
+            const context = canvas.getContext('2d');
+
+            const graghData = {
+                A: 10,
+                B: 20,
+                C: 40,
+                D: 60,
+                E: 100,
+            };
+            
+            let startX = 50;
+            drawBarGraph(graghData);
+
+            function drawBarGraph(data) {
+                const barWidth = 30;
+                const barHeightOffset = 0;
+
+                for (const key in data) {
+                    const barHeight = data[key];
+                    context.fillStyle = 'red'; 
+                    context.fillRect(
+                        startX,
+                        canvas.height - barHeight - barHeightOffset,
+                        barWidth,
+                        barHeight,
+                    );
+                    context.fillStyle = 'red';
+                    context.fillText(
+                        key,
+                        startX + barWidth / 2,
+                        canvas.height - 20,
+                    );
+
+                    startX += 50;
+                }
+            }
+        </script>
+    </body>
+</html>
