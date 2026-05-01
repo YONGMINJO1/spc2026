@@ -1,0 +1,184 @@
+<!-- /*
+=======================================================
+ 🎮 팩맨 키보드 이동 구현 - 요구사항 명세서
+=======================================================
+
+▶ 목표: 팩맨이 방향키로 상하좌우 움직이기
+
+-------------------------------------------------------
+[1단계] 팩맨 정적으로 그리기
+-------------------------------------------------------
+ - 캔버스 크기는 400 x 300 으로 설정한다
+ - 팩맨은 원 모양이며 반지름은 30이다
+ - 팩맨의 입은 열려있어야 한다 (부채꼴 모양)
+ - 입의 각도는 위아래로 45도씩 (총 90도) 열려있다
+
+ ✏️ 내가 구현할 것:
+    - arc() 와 lineTo() 를 조합해서 입 열린 팩맨을 그린다
+    - arc() 의 startAngle 과 endAngle 에 어떤 값이 들어가야 할까?
+    - 입을 닫으려면 어디서 어디로 lineTo() 해야 할까?
+
+
+-------------------------------------------------------
+[2단계] 위치를 변수로 관리하기
+-------------------------------------------------------
+ - 팩맨의 x, y 좌표를 변수로 선언한다
+ - 초기 위치는 캔버스 중앙으로 설정한다 (x=200, y=150)
+ - 팩맨을 그리는 코드에서 숫자를 직접 쓰지 않고 변수를 사용한다
+
+ ✏️ 내가 구현할 것:
+    - let x = ? , let y = ? 선언
+    - arc() 의 첫번째, 두번째 인자를 x, y 변수로 교체
+    - 변수를 바꾸면 팩맨 위치가 달라지는지 확인
+
+
+-------------------------------------------------------
+[3단계] 키보드 이벤트로 x, y 값 바꾸기
+-------------------------------------------------------
+ - 키보드의 방향키를 누르면 x 또는 y 값이 바뀐다
+ - 이동 속도(한 번에 움직이는 거리)는 5로 설정한다
+ - ArrowUp    → y 값이 줄어든다  (위로 = y가 감소)
+ - ArrowDown  → y 값이 늘어난다  (아래로 = y가 증가)
+ - ArrowLeft  → x 값이 줄어든다  (왼쪽으로 = x가 감소)
+ - ArrowRight → x 값이 늘어난다  (오른쪽으로 = x가 증가)
+
+ ✏️ 내가 구현할 것:
+    - document.addEventListener('keydown', function(e) { ... })
+    - e.key 값으로 어떤 방향키인지 구별한다
+    - 조건문(if 또는 switch)으로 각 방향에 맞게 x 또는 y를 변경
+
+
+-------------------------------------------------------
+[4단계] 애니메이션 루프로 화면 갱신하기
+-------------------------------------------------------
+ - draw() 라는 함수를 만든다
+ - draw() 함수 안에서 아래 순서로 실행한다:
+    1) 캔버스 전체를 지운다     → clearRect()
+    2) 팩맨을 현재 x, y 위치에 그린다
+    3) 다음 프레임에 draw()를 또 호출한다 → requestAnimationFrame()
+ - draw() 를 최초 1회 직접 호출해서 애니메이션을 시작한다
+
+ ✏️ 내가 구현할 것:
+    - function draw() { ... } 함수 선언
+    - 함수 내부에 위 3가지 순서대로 코드 작성
+    - 함수 바깥에서 draw() 한번 호출
+
+
+-------------------------------------------------------
+[5단계] 방향에 따라 팩맨 입 방향 바꾸기 (도전!)
+-------------------------------------------------------
+ - 팩맨이 이동하는 방향에 따라 입이 그 방향을 향해야 한다
+ - direction 이라는 변수를 만들어서 현재 방향을 저장한다
+   (예: 'right', 'left', 'up', 'down' 같은 문자열로 관리)
+ - 방향키를 누를 때 x,y 를 바꾸면서 direction 도 함께 바꾼다
+ - direction 값에 따라 arc() 의 startAngle, endAngle 을 다르게 준다
+
+ ✏️ 내가 구현할 것:
+    - let direction = 'right' 로 초기값 설정
+    - 각 방향별 startAngle, endAngle 값을 계산해서 적용
+    - 힌트: 오른쪽(기본) → startAngle = Math.PI/4,  endAngle = Math.PI*7/4
+            왼쪽        → startAngle = Math.PI*5/4, endAngle = Math.PI*3/4
+            아래쪽      → startAngle = Math.PI*3/4, endAngle = Math.PI*5/4  (도전!)
+            위쪽        → 직접 계산해보기!                                   (도전!)
+
+=======================================================
+ 💡 막혔을 때 스스로 해볼 것
+=======================================================
+ 1. console.log(e.key) 로 어떤 값이 출력되는지 먼저 확인한다
+ 2. 숫자(각도)가 헷갈리면 Math.PI 를 π 로 바꿔서 종이에 그려본다
+ 3. 한 단계씩만 구현하고 동작 확인 후 다음 단계로 넘어간다
+
+=======================================================
+*/ -->
+
+<!doctype html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Document</title>
+        <style>
+            canvas {
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="myCanvas" width="400" height="300"></canvas>
+        <script>
+            const canvas = document.getElementById('myCanvas');
+            const context = canvas.getContext('2d');
+
+            // 팩맨
+
+            // [1단계]
+            let startAngle = (1 / 4) * Math.PI;
+            let endAngle = 2 * Math.PI - (1 / 4) * Math.PI;
+
+            // [2단계] X,Y 변수 선언
+            let x = 200;
+            let y = 150;
+            let r = 30;
+            let speed = 5;
+
+            let direction = 'right';
+
+            // [4단계] 애니메이션 루프로 화면 갱신
+            function draw() {
+                // 1. 이전 그림 지우기
+                context.clearRect(0, 0, canvas.width, canvas.height);
+
+                if (direction === 'right') {
+                    startAngle = (1 / 4) * Math.PI; // 45도
+                    endAngle = 2 * Math.PI - (1 / 4) * Math.PI; // 315도
+                } else if (direction === 'left') {
+                    startAngle = 2 * Math.PI - (3 / 4) * Math.PI; //225도
+                    endAngle = (3 / 4) * Math.PI; // 135도
+                } else if (direction === 'down') {
+                    startAngle = (3 / 4) * Math.PI; // 135도
+                    endAngle = (1 / 4) * Math.PI; // 45도
+                } else if (direction === 'up') {
+                    startAngle = 2 * Math.PI - (1 / 4) * Math.PI; // 315도
+                    endAngle = 2 * Math.PI - (3 / 4) * Math.PI; // 225도
+                }
+                // 2. 팩맨 그리기
+                context.beginPath();
+                context.moveTo(x, y);
+                context.arc(x, y, r, startAngle, endAngle); // startAngle - 시작 각도 (45도) , endAngle - 끝 각도 (270도)
+                context.lineTo(x, y);
+
+                context.fillStyle = 'yellow';
+                context.fill();
+                context.stroke();
+                context.closePath();
+
+                requestAnimationFrame(draw);
+            }
+
+            // 최초 1회
+            draw();
+
+            // 3. [3단계] 키보드 입력
+
+            document.addEventListener('keydown', (ev) => {
+                // console.log(ev.key);
+                if (ev.key === 'ArrowUp') {
+                    y -= speed;
+                    direction = 'up';
+                } else if (ev.key === 'ArrowDown') {
+                    y += speed;
+                    direction = 'down';
+                } else if (ev.key === 'ArrowLeft') {
+                    x -= speed;
+                    direction = 'left';
+                } else if (ev.key === 'ArrowRight') {
+                    x += speed;
+                    direction = 'right';
+                }
+                console.log('x: ', x, 'y:', y);
+            });
+            // document.addEventListener('keydown', function (ev) {
+            //     console.log(ev.key);
+            // });
+        </script>
+    </body>
+</html>
