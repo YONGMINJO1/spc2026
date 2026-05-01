@@ -1,0 +1,110 @@
+<!--  -->
+
+<!doctype html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Document</title>
+        <style>
+            canvas {
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="myCanvas" width="400" height="300"></canvas>
+        <script>
+            const canvas = document.getElementById('myCanvas');
+            const context = canvas.getContext('2d');
+
+            // 팩맨
+
+            // [2단계] X,Y 변수 선언 -> 상수선언
+
+            const CANVAS_WIDTH = 400;
+            const CANVAS_HEIGHT = 300;
+            const RADIUS = 30;
+            const SPEED = 5;
+
+            let x = CANVAS_WIDTH / 2;
+            let y = CANVAS_HEIGHT / 2;
+
+            const MOUTH_ANGLE = (1 / 4) * Math.PI;
+
+            let direction = 'right';
+
+            // [4단계] 애니메이션 루프로 화면 갱신
+            function draw() {
+                // 1. 이전 그림 지우기
+                context.clearRect(0, 0, canvas.width, canvas.height);
+
+                const angles = getAngles(direction);
+                // [1단계]
+                // 2. 팩맨 그리기
+                context.beginPath();
+                context.moveTo(x, y);
+                context.arc(x, y, RADIUS, angles.start, angles.end); // startAngle - 시작 각도 (45도) , endAngle - 끝 각도 (270도)
+                context.lineTo(x, y);
+
+                context.fillStyle = 'yellow';
+                context.fill();
+                context.stroke();
+                context.closePath();
+
+                requestAnimationFrame(draw);
+            }
+
+            function getAngles(direction) {
+                if (direction === 'right') {
+                    return {
+                        start: MOUTH_ANGLE, // 45도
+                        end: 2 * Math.PI - MOUTH_ANGLE, // 315도
+                    };
+                } else if (direction === 'left') {
+                    return {
+                        start: Math.PI + MOUTH_ANGLE, // 225도
+                        end: Math.PI - MOUTH_ANGLE, // 135도
+                    };
+                } else if (direction === 'down') {
+                    return {
+                        start: Math.PI - MOUTH_ANGLE, // 135도
+                        end: MOUTH_ANGLE, // 45도
+                    };
+                } else if (direction === 'up') {
+                    return {
+                        start: 2 * Math.PI - MOUTH_ANGLE, // 315도
+                        end: Math.PI + MOUTH_ANGLE, // 225도
+                    };
+                }
+            }
+
+            // 최초 1회
+            draw();
+
+            // 3. [3단계] 키보드 입력
+            document.addEventListener('keydown', (ev) => {
+                // console.log(ev.key);
+                if (ev.key === 'ArrowUp') {
+                    y -= SPEED;
+                    y = Math.max(y, RADIUS);
+                    direction = 'up';
+                } else if (ev.key === 'ArrowDown') {
+                    y += SPEED;
+                    y = Math.min(y, CANVAS_HEIGHT - RADIUS);
+                    direction = 'down';
+                } else if (ev.key === 'ArrowLeft') {
+                    x -= SPEED;
+                    x = Math.max(x, RADIUS);
+                    direction = 'left';
+                } else if (ev.key === 'ArrowRight') {
+                    x += SPEED;
+                    x = Math.min(x, CANVAS_WIDTH - RADIUS);
+                    direction = 'right';
+                }
+            });
+            // document.addEventListener('keydown', function (ev) {
+            //     console.log(ev.key);
+            // });
+        </script>
+    </body>
+</html>
