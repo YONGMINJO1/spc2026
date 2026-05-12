@@ -21,15 +21,44 @@ if month in [12,1,2]:
     # print('겨울입니다.')
     seasson = '겨울'
 elif month in [3,4,5]:
-    # print('봄')
+    # print('봄입니다.')
     seasson = '봄'
 elif month in [6,7,8]:
-    # print('여름')
+    # print('여름입니다.')
     seasson= '여름'
 elif month in [9,10,11]:
-    # print('가을')
+    # print('가을입니다.')
     seasson= '가을'
 else:
+    # print('?? 잘못된 month 입니다.')
     seasson = '알수없는 계절'
 
 print(f"{month}월은 {seasson} 입니다.")
+
+height = 175 # cm
+weight = 70 # kg
+bmi = weight / ((height / 100) ** 2)
+
+if bmi < 18.5:
+    category = "저체중"
+elif bmi < 25:
+    category = "정상"
+elif bmi < 30:
+    category = "과체중"
+else:
+    category = "비만"
+
+print(f"OOO님의 키는 {height} 이고, 몸무게는 {category}이고, BMI지수는 {bmi}이며, 결론은 {category}입니다.")
+
+username = 'user'
+password = '1234'
+
+if username and password:
+    if username == 'admin' and password =='1234':
+        print("관리자로 로그인 되었습니다.")
+    elif username == 'user' and password == '1234':
+        print("일반 사용자로 로그인 되었습니다.")
+    else:
+        print("잘못된 ID 또는 비밀번호 입니다.")
+else:
+    print("유저네임과 비밀번호를 입력하세요.")

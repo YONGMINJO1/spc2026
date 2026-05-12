@@ -15,7 +15,7 @@ print(students)
 
 def get_a_student(students):
     a_students = []
-    for name, score in students.items():
+    for name, score in students.items(): # dict의 요소를 하나씩 가져옴(item())
         if score >= 90:
             a_students.append(name)
     return a_students

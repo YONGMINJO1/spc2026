@@ -28,5 +28,16 @@ print(my_newList)
 print(my_tuple)
 
 my_newtuple = tuple(my_newList) # 쓰기가 불가능한 리스트
+print(my_newList)
+my_newList[2] = 77
+print(my_newtuple)
 
+print("-" *30)
+a, b, c = (1,2,3)
+print(a,c,b)
 
+a_person = ("john", 23, "Student")
+print(a_person)
+name,age,occ = a_person
+print(name)
+print(age)
