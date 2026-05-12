@@ -1,27 +1,31 @@
-
 from playwright.sync_api import sync_playwright
-import csv
+
+# import csv
 
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=False)
     page = browser.new_page()
     page.goto("https://news.naver.com/section/105")
 
-    titles = page.locator(".section_article.as_headline a.sa_text_title")
+    headlines = page.locator(".section_article.as_headline a.sa_text_title")
+    print("헤드라인 갯수: ", headlines.count())
+    for i in range(headlines.count()):
+        news = headlines.nth(i)
 
-    for i in range(titles.count()):
-        news = titles.nth(i)
+        # 제목 가져오기
+        title = news.inner_text().strip()
 
-        text = news.inner_text().strip()
+        # 링크 가져오기
+        href = news.get_attribute("href")
 
-        link = news.get_attribute("href")
-
-        print(text)
-        print(link)
-        print("-" * 30)
-    # texts = titles.all_text_contents()
-    #print(title.count())
-    browser.close()
+        print(f"{1+1},{title} \n {href}")
+    input("엔터")
+    # print(title)
+    # print(href)
+    # print("-" * 30)
+    # texts = headlines.all_text_contents()
+    # print(headlines.count())
+    # browser.close()
 
 # with open("news.csv", "w", newline="", encoding="utf-8") as file:
 #     writer = csv.writer(file)

@@ -10,6 +10,7 @@ import csv
 url = "https://books.toscrape.com/"
 
 resp = requests.get(url)
+resp.encoding = "utf-8" # 유니코드 글자로 인식시켜서 깨지는 글자 제거
 if (resp.status_code == 200):
     print(resp.text)
 else:
@@ -34,21 +35,21 @@ with open("books.csv", "w", encoding="utf-8",newline="") as file:
     csv_writer = csv.writer(file)
     csv_writer.writerow({"도서명","평점","가격"})
 
-for book in books:
-    # print(book)
-    # break
-    # print(title)
-    title = book.h3.a['title']
+    for book in books:
+        # print(book)
+        # break
+        # print(title)
+        title = book.h3.a['title']
 
-    # 평점...
-    rating = book.p["class"][1]
-    rating_num = rating_map[rating]
+        # 평점...
+        rating = book.p["class"][1]
+        rating_num = rating_map[rating]
 
-    # 가격...
-    price = book.select_one(".price_color").text
-    price = price.replace("£", "")
+        # 가격...
+        price = book.select_one(".price_color").text
+        price = price.replace("£", "")
 
-    # print(f"도서명: {title}, 평점 : {rating}, 가격: {price}")
-    csv_writer.writerow({title,rating,price})
+        # print(f"도서명: {title}, 평점 : {rating}, 가격: {price}")
+        csv_writer.writerow({title,rating,price})
 
-print("파일작성완료")
+    print("파일작성완료")
