@@ -18,7 +18,7 @@ with sync_playwright() as p:
         # 링크 가져오기
         href = news.get_attribute("href")
 
-        print(f"{1+1},{title} \n {href}")
+        print(f"{i+1},{title} \n {href}")
     input("엔터")
     # print(title)
     # print(href)
