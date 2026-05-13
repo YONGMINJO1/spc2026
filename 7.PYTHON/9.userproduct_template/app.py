@@ -1,4 +1,4 @@
-from flask import Flask, render_template , request
+from flask import Flask, render_template, request
 
 # 1. /user 라는 경로를 만들고 URL파라미터를 기반으로 사용자를 조회할수 있게 한다.
 #    /user는 모든 사용자 /user/1 홍길동 /user/2 김철수 등
@@ -22,26 +22,34 @@ products = {
     103: {"id": 103, "name": "Mouse", "price": 40},
     104: {"id": 104, "name": "Monitor", "price": 300},
     105: {"id": 105, "name": "Headset", "price": 150},
-
 }
 
-@app.route('/')
+
+@app.route("/")
 def home():
     return render_template("index.html")
 
-@app.route('/user')
-@app.route('/user/<int:user_id>')
-def get_user(user_id):
-    print(user_id)
-    return "테스트"
 
-@app.route('/product')
+@app.route("/user")
+@app.route("/user/<int:user_id>")
+def get_user(user_id=None):
+    return render_template("user.html", user_id=user_id, users=users)
+
+
+@app.route("/product")
 def product():
-    id = request.args.get('id',type=int)
+    id = request.args.get("id", type=int)
     name = request.args.get("name", type=str)
 
     found = list(products.values())
-    
 
-if __name__ == '__main__':
-    app.run(debug=True) 
+    if id:
+        found = [p for p in found if p["id"] == id]
+    if name:
+        found = [p for p in found if p["name"].lower() == name.lower()]
+
+    return render_template("product.html", results=found)
+
+
+if __name__ == "__main__":
+    app.run(debug=True)

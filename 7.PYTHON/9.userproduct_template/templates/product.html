@@ -7,11 +7,15 @@
     </head>
     <body>
         <h1>상품조회</h1>
-        <!-- <form></form> -->
+        <form>
+            <label>상품코드: <input type="number" name="id" value=""{{request.args.get('id','')}}></label>
+            <label>상품명: <input type="name" name="name" value=""{{request.args.get('name','')}}></label>
+            <button type="submit">검색</button>
+        </form>
         <ul>
-            {% if result %}
-            <li></li>
-            {% endif %}
+            {% for p in results %}
+            <li>상품코드: <a href="/product?id{{p.id}}"></a>상품명: {{[p.name]}}, 상품가격: {{ p.price}}</li>
+            {% endfor %}
         </ul>
         {% else % }
         <ul>
