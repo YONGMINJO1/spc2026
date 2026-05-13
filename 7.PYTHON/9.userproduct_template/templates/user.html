@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <h1>User 검색</h1>
+        <!-- <form></form> -->
+
+        {% if user_id %}
+        <!-- 특정사용자 출력 -->
+        {% set user = users.get(user_id) %} {% else %}
+        <!-- 전체 사용자 출력 -->
+        <ul>
+            {% for u in users.values() %}
+            <li></li>
+            {% endif %}
+        </ul>
+        {% endif %}
+    </body>
+</html>

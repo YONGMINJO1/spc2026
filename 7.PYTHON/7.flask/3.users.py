@@ -7,6 +7,7 @@ users = [
     {"name": "Alice", "age": 27, "phone": "010-1234-5678"},
     {"name": "bob", "age": 41, "phone": "010-9876-1234"},
     {"name": "mark", "age": 33, "phone": "010-5555-8888"},
+    {"name": "David", "age": 33, "phone": "010-5555-8888"},
 ]
 
 # 파이썬 리스트 폼, 각각의 리스트에는 딕셔너리
@@ -32,6 +33,21 @@ def get_user_by_name(name):
     else:
         return jsonify({"message": "사용자를 찾지 못했습니다."})
 
+@app.route("/user/<int:age>")
+def get_user_by_age(age):
+    print("사용자 입력값: ", age)
+
+    # 나이가 같은 두명을 다 반환하려면 어떻게 해야할까?
+    user = []
+
+    for u in users:
+        if u['age'] == age:
+            user.append(u)
+            
+        if user:
+            return jsonify(user)
+        else:
+            return jsonify({"message": "User not found"})
 
 if __name__ == "__main__":
     app.run(debug=True)

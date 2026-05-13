@@ -1,0 +1,18 @@
+<html>
+    <head>
+        <title>마이 타이틀</title>
+    </head>
+
+    <body>
+        <h1>사용자 명단</h1>
+        <ul>
+            {% for name in names %}
+            <li>사용자 이름: {{user['name']}}</li>
+            <ul>
+                <li>나이 : {{user['age']}}</li>
+                <li>전화번호 : {{user['phone']}}</li>
+            </ul>
+            {% endfor %}
+        </ul>
+    </body>
+</html>
