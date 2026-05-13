@@ -8,6 +8,7 @@ users = [
     {"name": "bob", "age": 41, "phone": "010-9876-1234"},
     {"name": "mark", "age": 33, "phone": "010-5555-8888"},
     {"name": "David", "age": 33, "phone": "010-5555-8888"},
+    {"name": "David", "age": 27, "phone": "123-888-7890"},
 ]
 
 # 파이썬 리스트 폼, 각각의 리스트에는 딕셔너리
@@ -31,7 +32,8 @@ def get_user_by_name(name):
     if user:
         return jsonify(user)
     else:
-        return jsonify({"message": "사용자를 찾지 못했습니다."})
+        return jsonify({"message": "User not found"})
+
 
 @app.route("/user/<int:age>")
 def get_user_by_age(age):
@@ -41,13 +43,14 @@ def get_user_by_age(age):
     user = []
 
     for u in users:
-        if u['age'] == age:
+        if u["age"] == age:
             user.append(u)
-            
+
         if user:
             return jsonify(user)
         else:
             return jsonify({"message": "User not found"})
+
 
 if __name__ == "__main__":
     app.run(debug=True)
