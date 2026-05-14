@@ -14,6 +14,36 @@
         <button id="modBtn">데이터 수정</button>
         <div id="result"><!-- 응답 데이터를 표시할 곳 --></div>
         <script>
+            //PUT 정보 요청
+            document.getElementById('modBtn').addEventListener('click', () => {
+                const userid = document.getElementById('uid').value;
+
+                const putData = {
+                    title: 'hello',
+                    body: 'world',
+                    userId: userid,
+                    id: userid,
+                };
+
+                fetch(`https://jsonplaceholder.typicode.com/posts/$uesrid`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-type': 'application/json; charset=UTF-8',
+                    },
+                    body: JSON.stringify(putData),
+                })
+                    .then((resp) => resp.json())
+                    .then((data) => console.log(data));
+            });
+
+            // DELETE 정보 요청
+            document.getElementById('delBtn').addEventListener('click', () => {
+                const userid = document.getElementById('uid').value;
+                fetch(`https://jsonplaceholdere.typicode.com/posts/${userid}`, {
+                    method: 'DELETE',
+                });
+            });
+
             // POST 정보 요청
             document.getElementById(
                 'saveBtn'.addEventListener('click', () => {
@@ -23,8 +53,7 @@
                     const postData = {
                         title: 'hello',
                         body: 'world',
-                        userId: userid,
-                        id: userid,
+                        userId: 1,
                     };
                     // 이 주소(보내야 할 주소)는 원작자의 문서를 통해 확인
                     fetch('https://jsonplaceholder.typicode.com/posts', {
@@ -32,16 +61,40 @@
                         headers: {
                             'Content-type': 'application/json; charset=utf-8',
                         },
-                    });
+                        body: JSON.stringify(postData),
+                    })
+                        .then((resp) => resp.json())
+                        .then((data) => console.log(data));
                 }),
             );
+
+            // GET 정보 요청
             document.getElementById('loadBtn').addEventListener('click', () => {
-                fetch('http//localhost:5000/api/data').then((response) => {
-                    if (!response.ok) {
-                        console.log('성공적인 응답이 왔음.');
-                        return response.json();
-                    }
-                });
+                const userid = document.getElementById('uid').value;
+                console.log('사용자id', userid);
+
+                fetch(`https://jsonplaceholder.typicode.com/users/${userid}`)
+                    .then((response) => response.json())
+                    .then((data) => {
+                        console.log(data);
+                        const resultDiv = document.getElementById('result');
+                        resultDiv.innerHTML = `
+                <ul>
+                    <li>사용자ID: ${data.id}</li>
+                    <ul>
+                        <li>이름: ${data.name}</li>
+                    <li>전화번호: ${data.phone}</li>
+                    <li>웹사이트: ${data.website}</li>
+                    </ul>
+                    </ul>
+                    `;
+                    })
+                    .catch((error) => {
+                        console.log(
+                            '위에 fetch를 처리하고 가공하는 과정중 어디가에서 오류가 났음: ',
+                            error,
+                        );
+                    });
             });
         </script>
     </body>
