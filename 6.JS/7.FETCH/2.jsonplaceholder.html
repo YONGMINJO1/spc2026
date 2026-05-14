@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>외부 요청 테스트</h1>
+    <button id="loadBtn">데이터 요청</button>
+    <div id="result"><!-- 응답 데이터를 표시할 곳 --></div>
+    <script>
+        document.getElementById('loadBtn').addEventListener('click', ()=>{
+            fetch ('http//localhost:5000/api/data').then((response) =>{
+                if (!response.ok){
+                    console.log("성공적인 응답이 왔음.")
+                    return response.json();
+                }
+            })
+        })
+    </script>
+</body>
+</html>

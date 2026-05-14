@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <h1>외부 요청 테스트</h1>
+        <input type="number" id="uid" />
+        <button id="loadBtn">데이터 요청</button>
+        <button id="savedBtn">데이터 쓰기</button>
+        <button id="deldBtn">데이터 삭제</button>
+        <button id="modBtn">데이터 수정</button>
+        <div id="result"><!-- 응답 데이터를 표시할 곳 --></div>
+        <script>
+            // POST 정보 요청
+            document.getElementById(
+                'saveBtn'.addEventListener('click', () => {
+                    const userid = document.getElementById('uid').value;
+                    console.log('수정할 ID: ');
+
+                    const postData = {
+                        title: 'hello',
+                        body: 'world',
+                        userId: userid,
+                        id: userid,
+                    };
+                    // 이 주소(보내야 할 주소)는 원작자의 문서를 통해 확인
+                    fetch('https://jsonplaceholder.typicode.com/posts', {
+                        method: 'POST',
+                        headers: {
+                            'Content-type': 'application/json; charset=utf-8',
+                        },
+                    });
+                }),
+            );
+            document.getElementById('loadBtn').addEventListener('click', () => {
+                fetch('http//localhost:5000/api/data').then((response) => {
+                    if (!response.ok) {
+                        console.log('성공적인 응답이 왔음.');
+                        return response.json();
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>

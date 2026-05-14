@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <script>
+            document.getElementById('saveBtn').addEventListener('click', () => {
+                fetch('https://api.openai.com/v1/models', {
+                    headers: {
+                        Authorizstion: 'Bearer PUT_UESR_API_KEY_HERE', // 여기에 우리가 실제로 사용하는 우리 키를 넣으면 동작하는 코드임, GIT에 절대 올리면 안됨
+                    },
+                });
+            });
+        </script>
+    </body>
+</html>
