@@ -16,12 +16,36 @@
             document
                 .getElementById('photoBtn')
                 .addEventListener('click', () => {
-                    fetch('요청할 주소')
-                    .then(resp => resp.json()).then(data =>{
-                        displayResult(data);
-                    })
+                    // console.log('클릭');
+                    fetch('https://dog.ceo/api/breeds/image/random2')
+                        .then((resp) => resp.json())
+                        .then((data) => {
+                            if (data.status == 'success') {
+                                displayResult(data);
+                            } else {
+                                displayError(data);
+                            }
+                        })
+                        .catch((error) => {
+                            console.error('알수 없는 오류: ', error);
+                            displayError(data);
+                        });
+
+                    function displayError(data) {
+                        const result = document.getElementById('result');
+                        result.innerHTML = `
+                                        <p style="color: red;">이미지를 불러오지 못했습니다. 참고: ${data.message}</p>
+                                            `;
+                    }
+
+                    function displayResult(data) {
+                        console.log('화면에 DOM 그리기: ', data);
+                        const result = document.getElementById('result');
+                        result.innerHTML = `
+                    <img src="${data.message}" width="400px">
+                `;
+                    }
                 });
         </script>
     </body>
 </html>
-ㄹ

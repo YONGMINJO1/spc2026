@@ -6,13 +6,22 @@
         <title>Document</title>
     </head>
     <body>
+        <input type="text" id="prompt" placeholder="질문을 입력하세요" />
+        <button id="result">전송</button>
         <script>
             document.getElementById('saveBtn').addEventListener('click', () => {
                 fetch('https://api.openai.com/v1/models', {
                     headers: {
-                        Authorizstion: 'Bearer PUT_UESR_API_KEY_HERE', // 여기에 우리가 실제로 사용하는 우리 키를 넣으면 동작하는 코드임, GIT에 절대 올리면 안됨
+                        Authorization: 'Bearer PUT_YOUR_API_KEY_HERE', // 여기에실제로우리키를넣으면동작하는코드임.단절대로이키를커밋하면안됨.키는백엔드를통해서관리되어야함.
                     },
-                });
+                })
+                    .then((resp) => resp.json())
+                    .then((data) => {
+                        console.log(data);
+                        document.getElementById('result').innerHTML = `
+                        ${JSON.stringify(data)}
+                    `;
+                    });
             });
         </script>
     </body>
