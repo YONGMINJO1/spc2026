@@ -9,5 +9,3 @@ load_dotenv()
 API_KEY = 'YOUTUBE_API_KEY'
 
 search_query = '파이썬 튜토리얼'
-
-params
