@@ -1,0 +1,12 @@
+{% extends "base.html" %} {% block content %}
+<h2>상품 목록</h2>
+
+{% for product in products %}
+<div style="display: flex; align-items: center; gap: 10px">
+    <span>{{ product.name }} - {{ product.price }}원</span>
+    <form method="POST" action="/cart/add">
+        <input type="hidden" name="product_id" value="{{ product.id }}" />
+        <button type="submit">장바구니 담기</button>
+    </form>
+</div>
+{% endfor %} {% endblock %}
