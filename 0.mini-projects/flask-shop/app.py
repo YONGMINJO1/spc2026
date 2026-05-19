@@ -16,6 +16,11 @@ def home():
     return render_template("index.html", products=products)
 
 
+@app.route("/logout")
+def logout():
+    session.pop("user")
+    return redirect("/")
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
