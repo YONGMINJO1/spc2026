@@ -24,9 +24,9 @@ def init_db():
         cur = conn.cursor()
         cur.execute("""
                     CREATE TABLE IF NOT EXISTS users(
-                                        id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                        username TEXT NOT NULL,
-                                        password TEXT NOT NULL)
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    username TEXT NOT NULL,
+                    password TEXT NOT NULL)
                     """)
         
         # 기본 계정 정보
