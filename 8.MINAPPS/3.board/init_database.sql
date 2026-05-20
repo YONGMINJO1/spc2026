@@ -7,3 +7,6 @@ CREATE TABLE board (
     title VARCHAR(50) NOT NULL,
     message VARCHAR(200)
     )
+
+INSERT INTO board(title, message) VALUES(?,?), ("title1", "message1");
+INSERT INTO board(title, message) VALUES(?,?), ("title2", "message2");
