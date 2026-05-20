@@ -44,3 +44,28 @@ def delete_user(id):
         flash(f'사용자(id: {id}가 삭제되었습니다.)')
     
     return redirect(url_for('index'))
+
+@app.route('/')
+def index():
+    users = User.query.all()
+    for user in users:
+        print(user)
+
+    return render_template('index.html',users=users)
+
+if __name__=='__main__':
+    with app.app_context():
+        print('DB 초기화중...')
+        db.create_all()
+
+        if not User.query.first():
+            print('사용자 초기화...')
+            user1 = User(name="user1",age=30)
+            user2 = User(name="user2",age=33)
+            user3 = User(name="user3",age=34)
+            db.session.add(user1)
+            db.session.add(user2)
+            db.session.add(user3)
+            db.session.commit()
+
+        app.run(debug=True)
