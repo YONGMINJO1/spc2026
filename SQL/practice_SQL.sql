@@ -50,14 +50,31 @@ SELECT COUNT(*) FROM invoice_items
 WHERE InvoiceId = 37;
 
 -- 11. line_items_per_invoice.sql: InvoiceLine 테이블을 보고 각 Invoice에 대한 라인 항목 수를 계산하는 쿼리를 제공합니다. 힌트: 그룹화 기준
+SELECT InvoiceId, COUNT(*)
+FROM invoice_items
+GROUP BY InvoiceId;
 
 -- 12. line_item_track.sql: 각 송장 라인 항목에 구매한 트랙 이름을 포함하는 쿼리를 제공합니다.
+SELECT i.InvoiceLineId, i.InvoiceId, t.Name
+FROM invoice_items i
+JOIN tracks t ON i.TrackId = t.TrackId;
 
 -- 13. line_item_track_artist.sql: 구매한 트랙 이름과 아티스트 이름을 포함하는 쿼리를 각 송장 라인 항목과 함께 제공합니다.
+SELECT ii.InvoiceLineId, ii.InvoiceId, t.Name, ar.Name
+FROM invoice_items ii
+JOIN tracks t ON ii.TrackId = t.TrackId
+JOIN albums al ON t.AlbumId = al.AlbumId
 
 -- 14. country_invoices.sql: 국가별 송장 수를 표시하는 쿼리를 제공합니다. 힌트: 그룹화 기준
+SELECT BillingCountry, COUNT(*)
+FROM invoices
+GROUP BY BillingCountry;
 
 -- 15. playlists_track_count.sql: 각 재생 목록의 총 트랙 수를 표시하는 쿼리를 제공합니다. 재생 목록 이름은 결과 테이블에 포함되어야 합니다.
+SELECT p.Name, COUNT(*)
+FROM playlists p
+JOIN playlist_track pt ON p.PlaylistId = pt.PlaylistId
+GROUP BY p.PlaylistId;
 
 -- 16. Tracks_no_id.sql: 모든 트랙을 표시하지만 ID는 표시하지 않는 쿼리를 제공합니다. 결과에는 앨범 이름, 미디어 유형 및 장르가 포함되어야 합니다.
 
