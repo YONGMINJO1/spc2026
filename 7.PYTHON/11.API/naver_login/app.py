@@ -19,15 +19,13 @@ def naver_callback():
     code = requests.args.get("code")
     state = requests.args.get("")
 
-@app.route('/login')
-def login():
+# @app.route('/login')
+# def login():
     
-    auth_url = (
-        f"https://nid.naver.com/oauth2.0/authorize"
-        f"responsee_type=code&client_id={client_id}"
-        f"&redirect_url={callback_url}&state=HELLO"
-    )
+#     auth_url = (
 
-    print(auth_url)
+#     )
 
-    return redirect(auth_url)
+#     print(auth_url)
+
+#     return redirect(auth_url)
