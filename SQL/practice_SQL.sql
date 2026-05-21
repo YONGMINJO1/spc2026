@@ -77,10 +77,25 @@ JOIN playlist_track pt ON p.PlaylistId = pt.PlaylistId
 GROUP BY p.PlaylistId;
 
 -- 16. Tracks_no_id.sql: 모든 트랙을 표시하지만 ID는 표시하지 않는 쿼리를 제공합니다. 결과에는 앨범 이름, 미디어 유형 및 장르가 포함되어야 합니다.
+SELECT t.Name, al.Title, mt.Name, g.Name
+FROM tracks t
+JOIN albums al      ON t.AlbumId = al.AlbumId
+JOIN media_types mt ON t.MediaTypeId = mt.MediaTypeId
+JOIN genres g       ON t.GenreId = g.GenreId;
 
 -- 17. invoices_line_item_count.sql: 모든 송장을 표시하지만 송장 라인 항목의 수를 포함하는 쿼리를 제공합니다.
+SELECT i.InvoiceId, i.CustomerId, i.InvoiceDate, i.Total, COUNT(ii.InvoiceLineId) 
+FROM invoices i
+JOIN invoice_items ii ON i.InvoiceId = ii.InvoiceId
+GROUP BY i.InvoiceId;
 
 -- 18. sales_agent_total_sales.sql: 판매 대리점별 총 매출을 조회하는 쿼리를 제공한다.
+SELECT e.FirstName ||' '|| e.LastName, SUM(i.Total)
+FROM employees e
+JOIN customers c ON e.EmployeeId = c.SupportRepId
+JOIN invoices i  ON c.CustomerId = i.CustomerId
+WHERE e.Title = 'Sales Support Agent'
+GROUP BY e.EmployeeId;
 
 -- 19. top_2009_agent.sql: 2009년 가장 많은 매출을 올린 판매원은?
 --     힌트: 하위 쿼리에서 MAX 함수를 사용하십시오. 
