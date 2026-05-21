@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <form id="chat-form">
+            <input name="message" type="text" />
+            <button class="submit">전송</button>
+        </form>
+        <div id="chat-result"></div>
+
+        <script>
+            const chatForm = document.getElementById('chat-form');
+            chatForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const message = chatForm.elements.message.value;
+
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: message }),
+                });
+                const data = await response.json();
+
+                const chatResult = document.getElementById('chat-result');
+
+                chatResult.innerHTML += `<p><b>나:</b> ${message}</p>`;
+                chatResult.innerHTML += `<p><b>챗봇:</b> ${data.reply}</p>`;
+
+                chatForm.elements.message.value = ''; // 전송 후 입력창 초기화
+                // chatResult.innerHTML += data.reply;
+            });
+        </script>
+    </body>
+</html>
