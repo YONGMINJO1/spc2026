@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Melon-Wave | 회원가입{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center my-5">
+        <div class="col-md-6 col-lg-5">
+            <!-- 글래스모피즘 기반 회원가입 카드 -->
+            <div class="card premium-card p-4 shadow-lg">
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <i class="bi bi-person-plus-fill text-info" style="font-size: 3rem; filter: drop-shadow(0 0 10px rgba(0, 242, 254, 0.4));"></i>
+                        <h2 class="fw-bold text-white mt-3 mb-1">시작하기</h2>
+                        <p class="text-muted small">나만의 플레이리스트를 공유하고 Wave를 즐겨보세요.</p>
+                    </div>
+                    
+                    <form action="{{ url_for('register') }}" method="POST">
+                        <div class="mb-3">
+                            <label for="username" class="form-label text-white-50 small">사용자명 (ID)</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-dark border-secondary text-white-50"><i class="bi bi-person"></i></span>
+                                <input type="text" class="form-control form-control-custom" id="username" name="username" placeholder="사용할 아이디 입력" required>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="email" class="form-label text-white-50 small">이메일 주소</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-dark border-secondary text-white-50"><i class="bi bi-envelope"></i></span>
+                                <input type="email" class="form-control form-control-custom" id="email" name="email" placeholder="example@email.com" required>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="password" class="form-label text-white-50 small">비밀번호</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-dark border-secondary text-white-50"><i class="bi bi-lock"></i></span>
+                                <input type="password" class="form-control form-control-custom" id="password" name="password" placeholder="안전한 비밀번호 입력" required>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-premium w-100 py-2.5 fw-bold mb-3">회원가입 완료</button>
+                    </form>
+                    
+                    <div class="text-center">
+                        <p class="text-muted small mb-0">이미 계정이 있으신가요? <a href="{{ url_for('login') }}" class="text-info text-decoration-none fw-semibold">로그인하기</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+
+{% block title %}Melon-Wave | 마이프로필{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <div class="row g-4">
+        <!-- 1. 프로필 요약 카드 (좌측 사이드바) -->
+        <div class="col-lg-4">
+            <div class="card premium-card p-4 shadow-lg text-center">
+                <i class="bi bi-person-circle text-info" style="font-size: 6rem; filter: drop-shadow(0 0 15px rgba(0, 242, 254, 0.3));"></i>
+                <h3 class="fw-bold text-white mt-3 mb-1">{{ current_user.username }}</h3>
+                <p class="text-muted small mb-3">{{ current_user.email }}</p>
+                <div class="badge bg-secondary py-2 px-3 rounded-pill text-light">
+                    <i class="bi bi-calendar-check me-1"></i> 가입일: {{ current_user.created_at.strftime('%Y-%m-%d') }}
+                </div>
+                {% if current_user.is_admin %}
+                    <div class="mt-2">
+                        <span class="badge bg-warning text-dark py-2 px-3 rounded-pill"><i class="bi bi-shield-fill-check me-1"></i> 최고관리자</span>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- 2. 프로필 다기능 탭 패널 (우측 대영역) -->
+        <div class="col-lg-8">
+            <div class="card premium-card p-4 shadow-lg">
+                <!-- 탭 메뉴 링크 정의 -->
+                <ul class="nav nav-tabs border-secondary mb-4 gap-2" id="profileTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link text-white-50 border-0 rounded-3 {% if active_tab == 'dashboard' %}active bg-info text-dark{% endif %}" 
+                                id="dashboard-tab" data-bs-toggle="tab" data-bs-target="#dashboard-pane" type="button" role="tab">
+                            <i class="bi bi-speedometer2 me-1"></i>활동요약
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link text-white-50 border-0 rounded-3 {% if active_tab == 'songs' %}active bg-info text-dark{% endif %}" 
+                                id="songs-tab" data-bs-toggle="tab" data-bs-target="#songs-pane" type="button" role="tab">
+                            <i class="bi bi-music-note-list me-1"></i>등록한 곡
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link text-white-50 border-0 rounded-3 {% if active_tab == 'likes' %}active bg-info text-dark{% endif %}" 
+                                id="likes-tab" data-bs-toggle="tab" data-bs-target="#likes-pane" type="button" role="tab">
+                            <i class="bi bi-heart-fill me-1"></i>좋아요한 곡
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link text-white-50 border-0 rounded-3 {% if active_tab == 'notifications' %}active bg-info text-dark{% endif %}" 
+                                id="notifications-tab" data-bs-toggle="tab" data-bs-target="#notifications-pane" type="button" role="tab">
+                            <i class="bi bi-bell-fill me-1"></i>알림 히스토리
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link text-white-50 border-0 rounded-3 {% if active_tab == 'password' %}active bg-info text-dark{% endif %}" 
+                                id="password-tab" data-bs-toggle="tab" data-bs-target="#password-pane" type="button" role="tab">
+                            <i class="bi bi-key-fill me-1"></i>비밀번호 변경
+                        </button>
+                    </li>
+                </ul>
+
+                <!-- 탭 상세 콘텐츠 패널 -->
+                <div class="tab-content text-white" id="profileTabsContent">
+                    
+                    <!-- 탭 1: 활동 요약 대시보드 -->
+                    <div class="tab-pane fade {% if active_tab == 'dashboard' %}show active{% endif %}" id="dashboard-pane" role="tabpanel">
+                        <h4 class="fw-bold mb-4">내 활동 대시보드</h4>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="p-3 rounded bg-dark border border-secondary text-center">
+                                    <h2 class="fw-bold text-info">{{ my_songs|length if my_songs else 0 }}</h2>
+                                    <span class="text-muted small">공유한 노래</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="p-3 rounded bg-dark border border-secondary text-center">
+                                    <h2 class="fw-bold text-pink">{{ liked_songs|length if liked_songs else 0 }}</h2>
+                                    <span class="text-muted small">좋아요 누른 노래</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="p-3 rounded bg-dark border border-secondary text-center">
+                                    <h2 class="fw-bold text-warning">{{ my_comments|length if my_comments else 0 }}</h2>
+                                    <span class="text-muted small">작성한 감상댓글</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4 p-3 rounded bg-dark-subtle border border-secondary">
+                            <h5 class="fw-semibold"><i class="bi bi-info-circle text-info me-2"></i>최근 소식</h5>
+                            <p class="text-muted mb-0 small">Melon-Wave는 비동기식 실시간 데이터 처리를 통해 쾌적한 감상 환경을 보장합니다. 회원님께서 작성하신 댓글이나 좋아요는 곡 상세 페이지에서 영구 보관됩니다.</p>
+                        </div>
+                    </div>
+
+                    <!-- 탭 2: 내가 공유 등록한 곡 목록 -->
+                    <div class="tab-pane fade {% if active_tab == 'songs' %}show active{% endif %}" id="songs-pane" role="tabpanel">
+                        <h4 class="fw-bold mb-4">내가 등록하여 공유한 음악</h4>
+                        {% if my_songs %}
+                            <div class="row row-cols-1 row-cols-md-2 g-3">
+                                {% for song in my_songs %}
+                                    <div class="col">
+                                        <div class="d-flex align-items-center p-2 rounded bg-dark border border-secondary">
+                                            <img src="{{ song.thumbnail_url }}" class="rounded me-2" style="width: 70px; height: 50px; object-fit: cover;">
+                                            <div class="flex-grow-1 overflow-hidden" style="max-width: 180px;">
+                                                <h6 class="text-white text-truncate mb-0" style="font-size: 0.9rem;">{{ song.title }}</h6>
+                                                <small class="text-muted text-truncate d-block">{{ song.artist }}</small>
+                                            </div>
+                                            <a href="{{ url_for('song_detail', song_id=song.id) }}" class="btn btn-sm btn-outline-info ms-auto">보기</a>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p class="text-muted py-4 text-center">공유한 음악이 없습니다. 메인에서 첫 곡을 등록해 보세요!</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- 탭 3: 내가 좋아요한 곡 목록 -->
+                    <div class="tab-pane fade {% if active_tab == 'likes' %}show active{% endif %}" id="likes-pane" role="tabpanel">
+                        <h4 class="fw-bold mb-4">좋아요 표시한 음악 목록</h4>
+                        {% if liked_songs %}
+                            <div class="row row-cols-1 row-cols-md-2 g-3">
+                                {% for song in liked_songs %}
+                                    <div class="col">
+                                        <div class="d-flex align-items-center p-2 rounded bg-dark border border-secondary">
+                                            <img src="{{ song.thumbnail_url }}" class="rounded me-2" style="width: 70px; height: 50px; object-fit: cover;">
+                                            <div class="flex-grow-1 overflow-hidden" style="max-width: 180px;">
+                                                <h6 class="text-white text-truncate mb-0" style="font-size: 0.9rem;">{{ song.title }}</h6>
+                                                <small class="text-muted text-truncate d-block">{{ song.artist }}</small>
+                                            </div>
+                                            <a href="{{ url_for('song_detail', song_id=song.id) }}" class="btn btn-sm btn-outline-info ms-auto">보기</a>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p class="text-muted py-4 text-center">좋아요 표시한 음악이 없습니다.</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- 탭 4: 모든 알림 목록 확인 -->
+                    <div class="tab-pane fade {% if active_tab == 'notifications' %}show active{% endif %}" id="notifications-pane" role="tabpanel">
+                        <h4 class="fw-bold mb-4">알림 히스토리</h4>
+                        {% if notifications %}
+                            <div class="list-group rounded shadow-sm border border-secondary bg-dark">
+                                {% for noti in notifications %}
+                                    <a href="{{ noti.redirect_url or '#' }}" class="list-group-item list-group-item-action bg-dark border-secondary text-white py-3">
+                                        <div class="d-flex w-100 justify-content-between align-items-center">
+                                            <h6 class="mb-1" style="font-size: 0.95rem;"><i class="bi bi-info-circle-fill text-info me-2"></i>{{ noti.message }}</h6>
+                                            <small class="text-muted">{{ noti.created_at.strftime('%Y-%m-%d %H:%M') }}</small>
+                                        </div>
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p class="text-muted py-4 text-center">보관된 알림 메시지가 없습니다.</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- 탭 5: 비밀번호 변경 -->
+                    <div class="tab-pane fade {% if active_tab == 'password' %}show active{% endif %}" id="password-pane" role="tabpanel">
+                        <h4 class="fw-bold mb-4">비밀번호 변경</h4>
+                        <form action="{{ url_for('update_password') }}" method="POST">
+                            <div class="mb-3">
+                                <label for="old_password" class="form-label text-white-50 small">현재 비밀번호</label>
+                                <input type="password" class="form-control form-control-custom" id="old_password" name="old_password" required>
+                            </div>
+                            <div class="mb-4">
+                                <label for="new_password" class="form-label text-white-50 small">신규 비밀번호</label>
+                                <input type="password" class="form-control form-control-custom" id="new_password" name="new_password" required>
+                            </div>
+                            <button type="submit" class="btn btn-premium px-4"><i class="bi bi-check-circle me-1"></i>비밀번호 수정 적용</button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

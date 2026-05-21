@@ -1,0 +1,208 @@
+/* 프리미엄 다크 네온 테마 디자인 시스템 (Neo-Dark Premium Style) */
+
+:root {
+    --bg-primary: #0a0a0c;      /* 깊고 고급스러운 메인 다크 블랙 배경 */
+    --bg-secondary: #121216;    /* 컴포넌트, 카드를 위한 짙은 다크그레이 */
+    --bg-tertiary: #1b1b22;     /* 입력 폼, 리스트 하이라이트 배경 */
+    --accent-blue: #00f2fe;     /* 활력을 더해주는 생생한 네온 블루 */
+    --accent-purple: #4facfe;   /* 부드러운 그라데이션 전환을 위한 스카이블루 */
+    --accent-pink: #ff0844;     /* 좋아요 버튼 및 경고 포인트를 위한 네온 핑크 */
+    --text-main: #f3f4f6;       /* 가독성 높은 메인 텍스트 컬러 (Off-White) */
+    --text-muted: #9ca3af;      /* 부차적인 텍스트 및 주석용 뮤트 컬러 */
+    --glass-border: rgba(255, 255, 255, 0.08); /* 글래스모피즘 테두리 */
+}
+
+/* 글로벌 기본 설정 */
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-main);
+    font-family: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+/* 프리미엄 그라데이션 텍스트 */
+.gradient-text {
+    background: linear-gradient(135deg, var(--accent-blue) 0%, #8500ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+}
+
+/* 글래스모피즘 효과가 들어간 모던 네비게이션 바 */
+.navbar-custom {
+    background-color: rgba(18, 18, 22, 0.8) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--glass-border);
+    padding: 0.8rem 1.5rem;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    letter-spacing: -0.5px;
+}
+
+/* 네온 테마 카드 디자인 */
+.premium-card {
+    background: linear-gradient(145deg, #121216 0%, #17171e 100%);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.premium-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent, rgba(0, 242, 254, 0.05), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+}
+
+.premium-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(0, 242, 254, 0.3);
+    box-shadow: 0 12px 30px rgba(0, 242, 254, 0.08);
+}
+
+.premium-card:hover::before {
+    transform: translateX(100%);
+}
+
+/* 폼 컨트롤 및 입력 필드 스타일링 */
+.form-control-custom {
+    background-color: var(--bg-tertiary) !important;
+    border: 1px solid var(--glass-border) !important;
+    color: var(--text-main) !important;
+    border-radius: 10px !important;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control-custom:focus {
+    border-color: var(--accent-blue) !important;
+    box-shadow: 0 0 10px rgba(0, 242, 254, 0.25) !important;
+    outline: none;
+}
+
+/* 네온 그라데이션 버튼 */
+.btn-premium {
+    background: linear-gradient(135deg, var(--accent-blue) 0%, #0072ff 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 0.7rem 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.btn-premium:hover {
+    transform: scale(1.03);
+    box-shadow: 0 5px 15px rgba(0, 242, 254, 0.4);
+    color: #ffffff;
+}
+
+.btn-pink {
+    background: linear-gradient(135deg, var(--accent-pink) 0%, #f40076 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-pink:hover {
+    transform: scale(1.03);
+    box-shadow: 0 5px 15px rgba(255, 8, 68, 0.4);
+    color: #ffffff;
+}
+
+/* 알림 드롭다운 메뉴 스타일 */
+.dropdown-menu-dark {
+    background-color: var(--bg-secondary) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.dropdown-item {
+    color: var(--text-main) !important;
+    padding: 0.6rem 1.2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.dropdown-item:hover {
+    background-color: var(--bg-tertiary) !important;
+    color: var(--accent-blue) !important;
+}
+
+/* 유튜브 플레이어 래퍼 (반응형 16:9 유지) */
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 비율 */
+    height: 0;
+    overflow: hidden;
+    border-radius: 16px;
+    border: 1px solid var(--glass-border);
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* 댓글 목록 카드화 스타일 */
+.comment-card {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* 해시태그 뱃지 스타일 */
+.hashtag-badge {
+    background: rgba(0, 242, 254, 0.1);
+    color: var(--accent-blue);
+    border: 1px solid rgba(0, 242, 254, 0.2);
+    border-radius: 20px;
+    padding: 0.35rem 0.8rem;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    display: inline-block;
+    margin-right: 0.4rem;
+    margin-bottom: 0.4rem;
+}
+
+.hashtag-badge:hover {
+    background: var(--accent-blue);
+    color: var(--bg-primary);
+    transform: scale(1.05);
+}
+
+/* 애니메이션 효과 모음 */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+    100% { transform: scale(1); }
+}
+
+.heart-pulse {
+    animation: pulse 0.3s ease-in-out;
+}

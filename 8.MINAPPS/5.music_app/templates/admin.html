@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% block title %}Melon-Wave | 관리자 대시보드{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <!-- 대시보드 타이틀 -->
+    <div class="mb-5">
+        <h2 class="text-white fw-bold d-flex align-items-center">
+            <i class="bi bi-shield-lock-fill text-warning me-3" style="font-size: 2.5rem; filter: drop-shadow(0 0 10px rgba(255, 193, 7, 0.35));"></i>
+            Melon-Wave <span class="gradient-text ms-2">관리자 관제 패널</span>
+        </h2>
+        <p class="text-muted small">서비스의 전체 회원 및 업로드된 노래 콘텐츠 현황을 일괄 모니터링하고 제어합니다.</p>
+    </div>
+
+    <div class="row g-4">
+        <!-- 1. 가입한 회원 전체 관리 섹션 -->
+        <div class="col-12 col-xl-6">
+            <div class="card premium-card p-4 h-100 shadow-lg">
+                <h4 class="text-white fw-bold mb-4 d-flex align-items-center">
+                    <i class="bi bi-people-fill text-info me-2"></i> 회원 관리 ({{ users|length }})
+                </h4>
+                
+                <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                    <table class="table table-dark table-hover align-middle border-secondary mb-0">
+                        <thead>
+                            <tr class="text-muted" style="font-size: 0.85rem;">
+                                <th>가입자명</th>
+                                <th>이메일</th>
+                                <th>상태</th>
+                                <th class="text-center">액션</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for u in users %}
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <i class="bi bi-person-fill text-white-50 me-2 fs-5"></i>
+                                            <span class="text-white fw-semibold">{{ u.username }}</span>
+                                        </div>
+                                    </td>
+                                    <td><small class="text-muted">{{ u.email }}</small></td>
+                                    <td>
+                                        {% if u.is_admin %}
+                                            <span class="badge bg-warning text-dark">관리자</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary text-light">일반</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-center">
+                                        {% if u.username != 'admin' %}
+                                            <form action="{{ url_for('admin_delete_user', user_id=u.id) }}" method="POST" 
+                                                  onsubmit="return confirm('정말 이 회원을 강제 탈퇴시키겠습니까? 업로드한 곡과 댓글이 모두 유실됩니다.');">
+                                                <button type="submit" class="btn btn-sm btn-outline-danger py-1 px-2">강제탈퇴</button>
+                                            </form>
+                                        {% else %}
+                                            <span class="text-muted small">-</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. 업로드된 노래 전체 제어 섹션 -->
+        <div class="col-12 col-xl-6">
+            <div class="card premium-card p-4 h-100 shadow-lg">
+                <h4 class="text-white fw-bold mb-4 d-flex align-items-center">
+                    <i class="bi bi-music-note-beamed text-info me-2"></i> 콘텐츠 노래 관리 ({{ songs|length }})
+                </h4>
+                
+                <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                    <table class="table table-dark table-hover align-middle border-secondary mb-0">
+                        <thead>
+                            <tr class="text-muted" style="font-size: 0.85rem;">
+                                <th>곡 정보</th>
+                                <th>공유자</th>
+                                <th>지표</th>
+                                <th class="text-center">액션</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if songs %}
+                                {% for s in songs %}
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="{{ s.thumbnail_url }}" class="rounded me-2" style="width: 50px; height: 35px; object-fit: cover;">
+                                                <div class="overflow-hidden" style="max-width: 140px;">
+                                                    <h6 class="text-white text-truncate mb-0" style="font-size: 0.85rem;">{{ s.title }}</h6>
+                                                    <small class="text-muted text-truncate d-block" style="font-size: 0.75rem;">{{ s.artist }}</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td><small class="text-white-50">{{ s.uploader.username }}</small></td>
+                                        <td>
+                                            <div class="d-flex flex-column small text-muted" style="font-size: 0.75rem;">
+                                                <span>뷰: {{ s.view_count }}</span>
+                                                <span>하트: {{ s.likes|length }}</span>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <form action="{{ url_for('admin_delete_song', song_id=s.id) }}" method="POST" 
+                                                  onsubmit="return confirm('정말 이 곡을 삭제하시겠습니까? 연결된 모든 좋아요 및 댓글 데이터가 영구 유실됩니다.');">
+                                                <button type="submit" class="btn btn-sm btn-outline-danger py-1 px-2">삭제</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="4" class="text-muted text-center py-5">공유된 음악 콘텐츠가 아직 없습니다.</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

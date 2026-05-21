@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Melon-Wave | 프리미엄 음악 커뮤니티{% endblock %}</title>
+    <!-- 구글 폰트: Outfit -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- 부트스트랩 5 CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- 부트스트랩 아이콘 CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- 커스텀 네온 다크 CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+    <!-- 헤더 & 글래스모피즘 네비게이션 바 -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-white d-flex align-items-center" href="{{ url_for('index') }}">
+                <i class="bi bi-soundwave text-info me-2 fs-3"></i>
+                <span class="gradient-text">MELON-WAVE</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link text-light-emphasis" href="{{ url_for('index') }}"><i class="bi bi-music-note-beamed me-1"></i> 둘러보기</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center gap-3">
+                    {% if current_user.is_authenticated %}
+                        <!-- 비실시간 알림 아이콘 드롭다운 -->
+                        <div class="dropdown">
+                            <button class="btn btn-outline-secondary position-relative rounded-circle p-2" type="button" id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="width: 40px; height: 40px;">
+                                <i class="bi bi-bell text-white"></i>
+                                {% if g.unread_count > 0 %}
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger border border-dark">
+                                        {{ g.unread_count }}
+                                    </span>
+                                {% endif %}
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark dropdown-menu-custom py-2" aria-labelledby="notificationDropdown" style="width: 280px;">
+                                <li class="dropdown-header text-muted border-bottom border-secondary pb-2 mb-1">최근 알림</li>
+                                {% if g.notifications %}
+                                    {% for noti in g.notifications %}
+                                        <li>
+                                            <a class="dropdown-item d-flex flex-column py-2 {% if not noti.is_read %}bg-dark-subtle{% endif %}" href="{{ noti.redirect_url or url_for('notifications_list') }}">
+                                                <small class="text-white-50 text-wrap">{{ noti.message }}</small>
+                                                <span class="text-muted" style="font-size: 0.75rem;">{{ noti.created_at.strftime('%Y-%m-%d %H:%M') }}</span>
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                {% else %}
+                                    <li class="text-center py-3 text-muted"><small>도착한 알림이 없습니다.</small></li>
+                                {% endif %}
+                                <li class="border-top border-secondary pt-2 text-center">
+                                    <a href="{{ url_for('notifications_list') }}" class="text-info text-decoration-none" style="font-size: 0.85rem;">모든 알림 보기</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- 사용자 프로필 드롭다운 -->
+                        <div class="dropdown">
+                            <button class="btn btn-premium dropdown-toggle d-flex align-items-center gap-2" type="button" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-person-circle"></i> {{ current_user.username }}
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" aria-labelledby="userMenu">
+                                <li><a class="dropdown-item" href="{{ url_for('profile') }}"><i class="bi bi-person-gear me-2"></i> 마이프로필</a></li>
+                                {% if current_user.is_admin %}
+                                    <li><a class="dropdown-item text-warning" href="{{ url_for('admin_dashboard') }}"><i class="bi bi-shield-lock-fill me-2"></i> 관리자 패널</a></li>
+                                {% endif %}
+                                <li><hr class="dropdown-divider border-secondary"></li>
+                                <li><a class="dropdown-item text-danger" href="{{ url_for('logout') }}"><i class="bi bi-box-arrow-right me-2"></i> 로그아웃</a></li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        <a href="{{ url_for('login') }}" class="btn btn-outline-light px-4"><i class="bi bi-box-arrow-in-right me-1"></i> 로그인</a>
+                        <a href="{{ url_for('register') }}" class="btn btn-premium px-4"><i class="bi bi-person-plus me-1"></i> 회원가입</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 플래시 알림 메시지 영역 -->
+    <div class="container mt-3">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show border-0 rounded-3 shadow-lg" role="alert">
+                        <i class="bi {% if category == 'success' %}bi-check-circle-fill{% elif category == 'danger' %}bi-exclamation-triangle-fill{% else %}bi-info-circle-fill{% endif %} me-2"></i>
+                        {{ message }}
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- 페이지 메인 콘텐츠 -->
+    <main class="flex-grow-1 py-4">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- 푸터 -->
+    <footer class="py-4 mt-auto border-top border-secondary bg-dark text-muted" style="background-color: var(--bg-secondary) !important;">
+        <div class="container text-center">
+            <p class="mb-1" style="font-size: 0.9rem;">&copy; 2026 <span class="gradient-text fw-bold">Melon-Wave</span>. Created with Flask & Bootstrap 5.</p>
+            <small class="text-white-50">당신의 모든 음악적 순간을 파도로 엮어보세요.</small>
+        </div>
+    </footer>
+
+    <!-- 부트스트랩 5 JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6Rz5YN5757L61gLD97I55I53y51tHN8dx1LTmd5lj2C5g7J55UMg5GT6L4JJgALWIVI5up" crossorigin="anonymous"></script>
+    <!-- 공통 비동기 로직 JS -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

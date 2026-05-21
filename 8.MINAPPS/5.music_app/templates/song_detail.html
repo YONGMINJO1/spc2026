@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+
+{% block title %}Melon-Wave | {{ song.title }}{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <div class="row g-4">
+        <!-- 1. 유튜브 비디오 플레이어 및 노래 설명 (좌측 대영역) -->
+        <div class="col-lg-8">
+            <div class="card premium-card p-3 mb-4 shadow-lg">
+                <!-- 반응형 16:9 유튜브 임베디드 -->
+                <div class="video-container mb-3 shadow">
+                    <iframe src="https://www.youtube.com/embed/{{ song.youtube_video_id }}?autoplay=1&enablejsapi=1" 
+                            title="{{ song.title }}" frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            allowfullscreen></iframe>
+                </div>
+                
+                <div class="card-body px-1">
+                    <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                        <div>
+                            <h2 class="text-white fw-bold mb-1">{{ song.title }}</h2>
+                            <h5 class="text-muted mb-3"><i class="bi bi-person-circle text-info me-1"></i>{{ song.artist }}</h5>
+                        </div>
+                        
+                        <!-- 비동기 좋아요 버튼 -->
+                        <div>
+                            {% if current_user.is_authenticated %}
+                                <button id="btn-like-toggle" data-song-id="{{ song.id }}" 
+                                        class="btn {% if is_liked %}btn-pink{% else %}btn-outline-light{% endif %} d-flex align-items-center px-4 py-2 fw-semibold">
+                                    <i class="bi {% if is_liked %}bi-heart-fill{% else %}bi-heart{% endif %} me-2"></i>
+                                    좋아요 <span class="likes-count ms-1">{{ song.likes|length }}</span>
+                                </button>
+                            {% else %}
+                                <a href="{{ url_for('login') }}" class="btn btn-outline-secondary d-flex align-items-center px-4 py-2">
+                                    <i class="bi bi-heart me-2"></i>좋아요 <span class="ms-1">{{ song.likes|length }}</span>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <hr class="border-secondary my-3">
+                    
+                    <!-- 조회수, 등록시간 및 등록자 정보 -->
+                    <div class="d-flex flex-wrap gap-4 text-muted small mb-3">
+                        <span><i class="bi bi-eye-fill text-info me-1"></i> 조회수 <strong>{{ song.view_count }}</strong>회</span>
+                        <span><i class="bi bi-calendar-event me-1"></i> 등록일 <strong>{{ song.created_at.strftime('%Y-%m-%d') }}</strong></span>
+                        <span><i class="bi bi-cloud-upload me-1"></i> 공유자 <strong>{{ song.uploader.username }}</strong></span>
+                    </div>
+
+                    <!-- 등록된 해시태그 목록 -->
+                    <div class="mt-3">
+                        {% for tag in song.hashtags %}
+                            <a href="{{ url_for('hashtag_songs', tag_name=tag.name) }}" class="hashtag-badge">
+                                #{{ tag.name }}
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 댓글 영역 -->
+            <div class="card premium-card p-4 shadow-lg">
+                <h4 class="text-white fw-bold mb-4"><i class="bi bi-chat-right-text-fill text-info me-2"></i>감상 댓글 ({{ song.comments|length }})</h4>
+                
+                <!-- 댓글 작성 폼 (로그인 사용자 전용) -->
+                {% if current_user.is_authenticated %}
+                    <form action="{{ url_for('add_comment', song_id=song.id) }}" method="POST" class="mb-4">
+                        <div class="mb-3">
+                            <textarea class="form-control form-control-custom bg-dark text-white border-secondary" 
+                                      name="content" rows="3" placeholder="음악을 들은 후 소감을 남겨주세요..." required></textarea>
+                        </div>
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-premium px-4"><i class="bi bi-send-fill me-2"></i>댓글 작성</button>
+                        </div>
+                    </form>
+                {% else %}
+                    <div class="alert alert-secondary bg-dark text-muted border-secondary text-center py-4 mb-4">
+                        <p class="mb-2">로그인하시면 감상평 댓글을 작성할 수 있습니다.</p>
+                        <a href="{{ url_for('login') }}" class="btn btn-sm btn-outline-info">로그인하러 가기</a>
+                    </div>
+                {% endif %}
+
+                <!-- 댓글 목록 렌더러 -->
+                <div class="comments-list">
+                    {% if song.comments %}
+                        {% for comment in song.comments|sort(attribute='created_at', reverse=true) %}
+                            <div class="comment-card shadow-sm position-relative">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-person-fill text-info fs-5 me-2"></i>
+                                        <strong class="text-white">{{ comment.author.username }}</strong>
+                                        {% if comment.author.is_admin %}
+                                            <span class="badge bg-warning text-dark ms-2" style="font-size: 0.7rem;">관리자</span>
+                                        {% endif %}
+                                    </div>
+                                    <small class="text-muted">{{ comment.created_at.strftime('%Y-%m-%d %H:%M') }}</small>
+                                </div>
+                                <p class="mb-0 text-white-50 text-wrap">{{ comment.content }}</p>
+                                
+                                <!-- 작성자 본인 또는 관리자 삭제 권한 부여 -->
+                                {% if comment.user_id == current_user.id or current_user.is_admin %}
+                                    <form action="{{ url_for('delete_comment', comment_id=comment.id) }}" method="POST" 
+                                          class="position-absolute top-0 end-0 mt-2 me-2" 
+                                          onsubmit="return confirm('정말 이 댓글을 삭제하시겠습니까?');">
+                                        <button type="submit" class="btn btn-sm text-danger p-1" title="댓글 삭제">
+                                            <i class="bi bi-trash-fill fs-5"></i>
+                                        </button>
+                                    </form>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted text-center py-4">아직 작성된 댓글이 없습니다. 첫 소감을 적어보세요!</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. 우측 사이드바 (추천/기타 정보) -->
+        <div class="col-lg-4">
+            <div class="card premium-card p-4 shadow-lg mb-4">
+                <h5 class="text-white fw-bold mb-3"><i class="bi bi-lightbulb-fill text-warning me-2"></i>Melon-Wave Tip</h5>
+                <p class="text-muted small mb-2">곡 상세 화면에서 유튜브 비디오를 바로 재생하며 실시간으로 명곡의 깊은 감동을 체험할 수 있습니다.</p>
+                <p class="text-muted small">마음에 드는 노래에는 <strong>'좋아요'</strong> 버튼을 클릭하여 파도를 더욱 크게 밀어주세요! 다른 사용자들이 더욱 쉽게 발견할 수 있게 됩니다.</p>
+            </div>
+            
+            <div class="card premium-card p-4 shadow-lg">
+                <h5 class="text-white fw-bold mb-3"><i class="bi bi-info-circle-fill text-info me-2"></i>공유 기본 수칙</h5>
+                <ul class="text-muted small ps-3 mb-0" style="line-height: 1.6;">
+                    <li>저작권을 침해하는 부적절한 비디오 링크는 관리자에 의해 강제 삭제 처리될 수 있습니다.</li>
+                    <li>모든 커뮤니티 대화와 감상 댓글은 예의를 갖추어 비속어 없이 작성해 주시기 바랍니다.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+
+{% block title %}Melon-Wave | 음악에 파도를 타다{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- 히어로 웰컴 섹션 -->
+    <div class="row align-items-center justify-content-between my-5 p-5 rounded-4 shadow-lg" 
+         style="background: linear-gradient(135deg, rgba(27, 27, 34, 0.9) 0%, rgba(18, 18, 22, 0.9) 100%); border: 1px solid var(--glass-border);">
+        <div class="col-lg-8 text-center text-lg-start">
+            <h1 class="display-4 fw-bold text-white mb-3">당신만의 음악 파도, <br><span class="gradient-text">Melon-Wave</span>에 업로드하세요.</h1>
+            <p class="lead text-muted mb-4">유튜브의 수많은 숨은 명곡들을 검색하고 등록하여, 사람들과 감상하고 이야기를 나누어 보세요.</p>
+            {% if current_user.is_authenticated %}
+                <button class="btn btn-premium btn-lg px-4" data-bs-toggle="modal" data-bs-target="#songUploadModal">
+                    <i class="bi bi-cloud-arrow-up-fill me-2"></i>새로운 노래 등록하기
+                </button>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="btn btn-premium btn-lg px-4">
+                    <i class="bi bi-box-arrow-in-right me-2"></i>로그인하고 시작하기
+                </a>
+            {% endif %}
+        </div>
+        <div class="col-lg-4 d-none d-lg-block text-center">
+            <i class="bi bi-music-player-fill text-info" style="font-size: 10rem; filter: drop-shadow(0 0 20px rgba(0, 242, 254, 0.35));"></i>
+        </div>
+    </div>
+
+    <!-- 해시태그 모아보기 활성화 시 피드백 배너 -->
+    {% if active_tag %}
+        <div class="d-flex align-items-center justify-content-between mb-4 p-3 rounded bg-dark border border-info">
+            <h4 class="mb-0 text-white"><i class="bi bi-hash text-info"></i> 해시태그 <strong>{{ active_tag }}</strong> 검색 결과</h4>
+            <a href="{{ url_for('index') }}" class="btn btn-sm btn-outline-light">전체보기</a>
+        </div>
+    {% endif %}
+
+    <!-- 1. 인기 음악 섹션 (좋아요 정렬) -->
+    {% if popular_songs and not active_tag %}
+    <div class="mb-5">
+        <h3 class="text-white fw-bold mb-4 d-flex align-items-center">
+            <i class="bi bi-fire text-danger me-2"></i> 실시간 인기 Waves
+        </h3>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for song in popular_songs %}
+            <div class="col">
+                <div class="card premium-card h-100">
+                    <img src="{{ song.thumbnail_url or 'https://images.unsplash.com/photo-1614680376593-902f74fa0d41?w=500' }}" 
+                         class="card-img-top" style="height: 180px; object-fit: cover;" alt="{{ song.title }}">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title text-white text-truncate mb-1">{{ song.title }}</h5>
+                        <p class="card-text text-muted mb-3"><i class="bi bi-person-fill"></i> {{ song.artist }}</p>
+                        <div class="mt-auto d-flex justify-content-between align-items-center">
+                            <span class="text-info" style="font-size: 0.9rem;"><i class="bi bi-eye"></i> {{ song.view_count }}</span>
+                            <span class="text-pink fw-bold" style="font-size: 0.9rem;"><i class="bi bi-heart-fill"></i> {{ song.likes|length }}</span>
+                            <a href="{{ url_for('song_detail', song_id=song.id) }}" class="btn btn-sm btn-outline-info rounded-pill px-3">듣기</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- 2. 최신 등록 음악 섹션 -->
+    <div class="mb-5">
+        <h3 class="text-white fw-bold mb-4 d-flex align-items-center">
+            <i class="bi bi-clock-history text-info me-2"></i> 최신 Waves
+        </h3>
+        {% if recent_songs %}
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for song in recent_songs %}
+            <div class="col">
+                <div class="card premium-card h-100">
+                    <img src="{{ song.thumbnail_url or 'https://images.unsplash.com/photo-1614680376593-902f74fa0d41?w=500' }}" 
+                         class="card-img-top" style="height: 180px; object-fit: cover;" alt="{{ song.title }}">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title text-white text-truncate mb-1">{{ song.title }}</h5>
+                        <p class="card-text text-muted mb-3"><i class="bi bi-person-fill"></i> {{ song.artist }}</p>
+                        <div class="mt-auto d-flex justify-content-between align-items-center">
+                            <span class="text-info" style="font-size: 0.9rem;"><i class="bi bi-eye"></i> {{ song.view_count }}</span>
+                            <span class="text-pink" style="font-size: 0.9rem;"><i class="bi bi-heart-fill"></i> {{ song.likes|length }}</span>
+                            <a href="{{ url_for('song_detail', song_id=song.id) }}" class="btn btn-sm btn-outline-info rounded-pill px-3">듣기</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-muted py-5 text-center fs-5">등록된 곡이 아직 없습니다. 첫 곡을 등록해 보세요!</p>
+        {% endif %}
+    </div>
+
+    <!-- 3. 해시태그 구름 섹션 -->
+    {% if all_hashtags %}
+    <div class="p-4 rounded-4 bg-dark mb-5 border border-secondary">
+        <h5 class="text-white mb-3"><i class="bi bi-tags-fill text-info me-2"></i> 인기 테마 태그</h5>
+        <div class="d-flex flex-wrap">
+            {% for tag in all_hashtags %}
+                <a href="{{ url_for('hashtag_songs', tag_name=tag.name) }}" class="hashtag-badge">
+                    #{{ tag.name }}
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<!-- 4. 유튜브 검색 및 노래 등록 모달 (로그인 사용자 전용) -->
+{% if current_user.is_authenticated %}
+<div class="modal fade" id="songUploadModal" tabindex="-1" aria-labelledby="songUploadModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content text-white" style="background-color: var(--bg-secondary); border: 1px solid var(--glass-border); border-radius: 20px;">
+            <div class="modal-header border-bottom border-secondary">
+                <h5 class="modal-title fw-bold" id="songUploadModalLabel"><i class="bi bi-youtube text-danger me-2"></i> 유튜브 음악 Wave 등록</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <!-- 유튜브 검색 입력 양식 -->
+                <div class="input-group mb-4 shadow-sm">
+                    <input type="text" class="form-control form-control-custom bg-dark border-secondary text-white" 
+                           id="youtube-search-input" placeholder="가수명과 노래 제목을 입력하여 음악을 찾으세요...">
+                    <button class="btn btn-premium px-4" type="button" id="btn-youtube-search">
+                        <i class="bi bi-search"></i> 검색
+                    </button>
+                </div>
+
+                <!-- 비동기 검색 결과 리스트 출력 영역 -->
+                <div id="youtube-search-results" class="mb-4" style="max-height: 280px; overflow-y: auto;">
+                    <p class="text-muted text-center py-4">검색할 노래 제목이나 가수명을 상단에 검색하세요.</p>
+                </div>
+
+                <!-- 등록 상세 입력 양식 (곡 선택 시 비동기로 노출) -->
+                <form id="register-details-form" action="{{ url_for('add_song') }}" method="POST" class="d-none border-top border-secondary pt-3">
+                    <input type="hidden" name="youtube_video_id" id="reg-video-id">
+                    <input type="hidden" name="thumbnail_url" id="reg-thumbnail">
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="reg-title" class="form-label text-white-50 small">곡 제목</label>
+                            <input type="text" class="form-control form-control-custom" name="title" id="reg-title" required readonly>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="reg-artist" class="form-label text-white-50 small">가수명 / 채널</label>
+                            <input type="text" class="form-control form-control-custom" name="artist" id="reg-artist" required readonly>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="reg-hashtags" class="form-label text-white-50 small">해시태그 (선택)</label>
+                        <input type="text" class="form-control form-control-custom" name="hashtags" id="reg-hashtags" 
+                               placeholder="예: #발라드, #감성, #조용한 (공백이나 쉼표로 구분 가능)">
+                    </div>
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-premium w-100 py-2"><i class="bi bi-plus-circle-fill me-2"></i>이 곡을 내 Wave로 등록하기</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

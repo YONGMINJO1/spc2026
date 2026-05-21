@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Board Vibe ✨ | Premium Bulletin Board</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Ambient Background Neon Orbs -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <div class="app-container">
+        <!-- Toast Notification -->
+        <div id="toast" class="toast hidden">
+            <span id="toastIcon"><i class="fa-solid fa-circle-info"></i></span>
+            <span id="toastMessage">알림 메시지</span>
+        </div>
+
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo">
+                <span class="logo-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
+                <h1>Board <span class="gradient-text">Vibe</span></h1>
+            </div>
+            <p class="subtitle">당신의 생각과 영감을 감각적인 카드 뷰로 나누어보세요.</p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="app-main">
+            <!-- Form Section -->
+            <section class="form-section">
+                <div class="glass-card form-card">
+                    <div class="card-header">
+                        <span class="header-dot dot-1"></span>
+                        <span class="header-dot dot-2"></span>
+                        <span class="header-dot dot-3"></span>
+                        <h2>새로운 바이브 남기기</h2>
+                    </div>
+                    <form id="postForm" novalidate>
+                        <div class="input-group">
+                            <label for="title">Title</label>
+                            <div class="input-wrapper">
+                                <i class="fa-regular fa-bookmark input-icon"></i>
+                                <input type="text" id="title" name="title" placeholder="매력적인 제목을 입력하세요..." required maxlength="50">
+                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="message">Message</label>
+                            <div class="input-wrapper">
+                                <i class="fa-regular fa-comment-dots input-icon textarea-icon"></i>
+                                <textarea id="message" name="message" placeholder="나누고 싶은 이야기를 적어주세요..." required maxlength="500"></textarea>
+                            </div>
+                        </div>
+
+                        <button type="submit" id="submitBtn" class="btn btn-primary">
+                            <span>Vibe 등록하기</span>
+                            <i class="fa-solid fa-paper-plane button-arrow"></i>
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Cards Grid Section -->
+            <section class="feed-section">
+                <div class="feed-header">
+                    <h3>최근의 생각들 <span id="postCount" class="badge">0</span></h3>
+                    <div class="feed-filter">
+                        <i class="fa-solid fa-arrow-down-wide-short"></i>
+                        <span>최신순</span>
+                    </div>
+                </div>
+                
+                <!-- Cards Container -->
+                <div id="postsGrid" class="posts-grid">
+                    <!-- Cards will be dynamically injected here by JS -->
+                    <div class="loading-state">
+                        <i class="fa-solid fa-spinner fa-spin"></i>
+                        <p>바이브 로드 중...</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>&copy; 2026 Board Vibe. Crafted with <i class="fa-solid fa-heart heart-pulse"></i> and Flask</p>
+        </footer>
+    </div>
+
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
