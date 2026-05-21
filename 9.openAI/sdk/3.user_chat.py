@@ -4,20 +4,29 @@ import openai
 from dotenv import load_dotenv
 import os
 
-
 load_dotenv()
 
-openai_api_key = os.getenv('OPENAI_API_KEY')
+openai_api_key = os.getenv("OPENAI_API_KEY")
 client = openai.OpenAI(api_key=openai_api_key)
 
 
-response = client.chat.completions.create(
-    model='gpt-3.5-turbo',
-    messages=[
-        {'role':'system', 'content':'당신은 나의 질문에 답변을 잘 하는 챗봇 입니다.'},
-        {'role':'user', 'content':'안녕하세요, 반갑습니다.'}
-    ]
-)
+def ask_chatbot(user_input):
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {
+                "role": "system",
+                "content": "당신은 나의 질문에 답변을 잘 하는 챗봇 입니다.",
+            },
+            {"role": "user", "content": "안녕하세요, 반갑습니다."},
+        ],
+    )
 
-final_response = response.choices[0].message.content
-print(final_response)
+    final_response = response.choices[0].message.content
+    print(final_response)
+
+
+while True:
+    user_input = input("\n질문:").strip()
+    chatbot_response = ask_chatbot(user_input)
+    print("챗봇응답: ", chatbot_response)
