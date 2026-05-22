@@ -1,6 +1,9 @@
 from flask import Flask, render_template, jsonify, request
 from openai import OpenAI
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 
@@ -16,8 +19,8 @@ def chat():
     message = data["message"]
 
     client = OpenAI(
-        api_key="sk-test-1234"
-    )  # env 파일을 사용해서 실제 API-KEY  사용하기!
+        api_key = os.getenv("OPENAI_API_KEY")
+    )  # env 파일을 사용해서 실제 API-KEY 사용하기! - 수정완료
 
     completion = client.chat.completions.create(
         model="gpt-4o-mini", messages=[{"role": "user", "content": message}]
