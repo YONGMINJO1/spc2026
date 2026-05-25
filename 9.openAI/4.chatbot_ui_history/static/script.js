@@ -1,14 +1,36 @@
+// 일단 DOM이 로딩 된 다음에..
 document.addEventListener('DOMContentLoaded', () => {
     const chatInput = document.getElementById('user-input');
     const formInput = document.getElementById('user-input-form');
     const resultDiv = document.getElementById('result');
+    const chatContainer = document.getElementById('chat-container');
 
+    // 폼 제출 이벤트 리스너
     formInput.addEventListener('submit', async (ev) => {
         ev.preventDefault();
 
         const chatMessage = chatInput.value;
+        if (!chatMessage) return; // 빈 메시지는 전송 안 함
         // console.log(chatMessage); 실무적으로 X
 
+        // 1. 내가 보낸 메시지를 먼저 화면(우측)에 추가
+        appendMessage('user', chatMessage);
+        chatInput.value = '';
+
+        try {
+            // 2. 벡엔드 API에 메시지 전송( 기능 분리)
+            const replyText = await fetchChatbotReply(chatMessage);
+
+            // 3. 챗봇의 답변을 화면 ( 좌측 ) 에 추가
+            appendMwssage('bot', replyText);
+        } catch (error) {
+            console.error('에러 발생', error);
+            appendMessage('bot', '죄송합니다. 서버와 연결이 원활하지 않아요.');
+        }
+    });
+
+    // API 통신을 담당하는 함수(Fetch 분리)
+    async function fetchChatbotReply(message) {
         const response = await fetch('/api/chat', {
             method: 'POST',
             headers: {
@@ -17,18 +39,45 @@ document.addEventListener('DOMContentLoaded', () => {
             body: JSON.stringify({ chatMessage }),
         });
 
+        if (!response.ok) {
+            throw new ERror('네트워크 응답에 문제가 있습니다.');
+        }
+
         const data = await response.json();
-        console.log(response);
+        // console.log(response);
+        return data.reply;
+    }
 
-        // .then((response) => response.json())
-        // .then(
-        //     (data) => console.log(data), // Promise <Pending>
-        // );
+    /**
+     * 화면에 말풍선 DOM을 그리는 함수 (그리기 분리)
+     * @param {string} sender - 'user' 또는 'bot'
+     * @param {string} text - 메시지 내용
+     */
 
-        const chatbotReply = document.createElement('p');
-        chatbotReply.innerText = data.reply;
-        resultDiv.appendChild(chatbotReply);
-    });
+    function addendMessage(sender, text) {
+        // <div class="message user"> 또는 <div class="message bot"> 생성
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('message'.sender);
+
+        // <div class="bubble">내용</div> 생성
+        const bubbleDiv = document.createElement('div');
+        bubbleDiv.classList.add('bubble');
+        bubbleDiv.innerText = text;
+
+        // 구조 조립 후 resultDiv에 삽입
+        message.appendChild(bubbleDiv);
+        resultDiv.appendChild(messageDiv);
+    }
+
+    // .then((response) => response.json())
+    // .then(
+    //     (data) => console.log(data), // Promise <Pending>
+    // );
+
+    //     const chatbotReply = document.createElement('p');
+    //     chatbotReply.innerText = data.reply;
+    //     resultDiv.appendChild(chatbotReply);
+    // });
 
     // TODO - 위에 리팩토링해서 적절하게 분리.. fetch 하는거 분리하고 응답 받아서 .DOM 그리는것 나누기
 });
