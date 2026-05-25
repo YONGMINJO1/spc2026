@@ -9,7 +9,7 @@ load_dotenv()
 client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 # static 폴더 경로와 그 prefix를 결정(변경) 할 수 있음
-app = Flask(__name__, static_folder="public", static_url_path="")
+app = Flask(__name__, static_folder="static", static_url_path="")
 
 # history = [] 이거를 대체할 DB 코드에 넣기
 conn = sqlite3.connect("chatgpt.db", check_same_thread=False)
@@ -19,12 +19,12 @@ cursor = conn.cursor()
 
 def init_db():
     cursor.execute("""
-        CAREATE TABLE IF NOT EXISTS history(
-                    id INTEGER PRIMARY KEY AUTOONCREMENT
+        CREATE TABLE IF NOT EXISTS history(
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
                     role TEXT NOT NULL,
-                    content TEXT NOT NULL),
+                    content TEXT NOT NULL,
                     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-                    }
+                    )
         """)
     conn.commit()
 
@@ -34,7 +34,7 @@ init_db()
 
 @app.route("/")
 def index():
-    return send_from_directory("public", "index.html")
+    return send_from_directory("static", "index.html")
 
 
 @app.route("/api/chat", methods=["POST"])
@@ -42,7 +42,9 @@ def chat():
     data = request.get_json()
     chat_message = data.get("chatMessage")
     # 사용자 저장
-    cursor.execute("INSERT INTO (role, content) VALUES (?,?)", ("user", chat_message))
+    cursor.execute(
+        "INSERT INTO history (role, content) VALUES (?,?)", ("user", chat_message)
+    )
     conn.commit()
 
     # chatgpt 에게 물어보기...
@@ -52,10 +54,10 @@ def chat():
     )
     conn.commit()
 
-    return jsonify({"reply": {gpt_reply}})
+    return jsonify({"reply": gpt_reply})
 
 
-def ask_chatgpt():
+def ask_chatgpt(gpt_ask_message):
 
     cursor.execute("SELECT role, content FROM history ORDER BY id DESC LIMIT 10")
     rows = cursor.fetchall()

@@ -8,9 +8,9 @@ from openai import OpenAI
 import faiss
 import numpy as np
 
-client = OpenAI(api=os.getenv("OPENAI_API_KEY"))
-
 load_dotenv()
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
 
 # 우리의 문장 데이터
 documents = [

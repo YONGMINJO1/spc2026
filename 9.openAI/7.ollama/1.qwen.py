@@ -1,5 +1,5 @@
 # pip install requests
-# ollama pull qwen2.5:1.5
+# ollama pull qwen2.5:1.5b
 # ollama pull exaone3.5:2.4b
 
 import requests
