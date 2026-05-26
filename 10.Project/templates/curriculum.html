@@ -1,7 +1,40 @@
-{% extends "base.html" %}
-
-{% block content %}
+{% extends "base.html" %} {% block content %}
 <h2>{{ grade }}학년 -{{ curriculum_title }} 커리큘럼</h2>
 
 <!-- 이후에 채팅창 박스를 넣고 대화하도록 만들어야함... -->
+<div id="chat-box"></div>
+
+<input type="text" id="user-input" placeholder="메시지를 입력하세요" />
+<button type="button" onclick="sendMessage()">전송</button>
+
+<script>
+    const grade = '{{ grade }}';
+    const curriculumTitle = '{{ curriculum_title }}';
+
+    async function sendMessage() {
+        const message = document.getElementById('user-input').value;
+
+        const response = await fetch('/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                message: message,
+                grade: grade,
+                curriculum_title: curriculumTitle,
+            }),
+        });
+
+        const data = await response.json();
+        // console.log(data); // 일단 콘솔에서 확인
+
+        // 내 메시지 먼저 추가
+        document.getElementById('chat-box').innerHTML +=
+            '<div>나: ' + message + '</div>';
+        document.getElementById('chat-box').innerHTML +=
+            '<div>선생님: ' + data.reply + '</div>';
+
+        // 입력창 초기화
+        document.getElementById('user-input').value = '';
+    }
+</script>
 {% endblock %}
