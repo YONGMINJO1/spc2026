@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>{{ grade }} 학년 커리큘럼</h2>
+<ul>{% for idxm curriculum in curriculums %}
+    <li><a href="{{ url_for('curriculum', grade=grade, curriculum_id=idx) }}">{{ curriculumn }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}
