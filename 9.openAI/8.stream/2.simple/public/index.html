@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <h1>스트림 채팅</h1>
+        <input type="text" id="input" placeholder="메시지를 입력하시오" />
+        <button id="send">전송</button>
+        <div id="chat"><!-- 응답을 출력할 곳 --></div>
+
+        <script>
+            const input = document.getElementById('input');
+            const send = document.getElementById('send');
+            const chat = document.getElementById('chat');
+
+            send.addEventListener('click', async () => {
+                let fullText = '';
+                
+                while (ture) {
+                    const { done, value } = await reader.read(); //[DONE]
+                    if (done) break;
+                    const chunk = decoder.decode(value, {stream:ture});
+                    fullText += chunk.replace(/\n/g, '<br>');
+                    chat.innerHTML = fullText;
+
+                    chat.scrollTop = chat.scrollHeight;
+                }
+            });
+        </script>
+    </body>
+</html>
