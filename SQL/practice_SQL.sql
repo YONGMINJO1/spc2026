@@ -99,10 +99,48 @@ GROUP BY e.EmployeeId;
 
 -- 19. top_2009_agent.sql: 2009년 가장 많은 매출을 올린 판매원은?
 --     힌트: 하위 쿼리에서 MAX 함수를 사용하십시오. 
+SELECT e.FirstName ||' '|| e.LastName, SUM(i.Total)
+FROM employees e
+JOIN customers c ON e.EmployeeId = c.SupportRepId
+JOIN invoices i  ON c.CustomerId = i.CustomerId
+WHERE e.Title = 'Sales Support Agent'
+AND strftime('%Y', i.InvoiceDate) = '2009'
+GROUP BY e.EmployeeId
+HAVING SUM(i.Total) = (
+    SELECT MAX(total_sales) FROM (
+        SELECT SUM(i.Total) as total_sales
+        FROM employees e
+        JOIN customers c ON e.EmployeeId = c.SupportRepId
+        JOIN invoices i  ON c.CustomerId = i.CustomerId
+        WHERE e.Title = 'Sales Support Agent'
+        AND strftime('%Y', i.InvoiceDate) = '2009'
+        GROUP BY e.EmployeeId
+    )
+);
 
 -- 20. top_agent.sql: 전체 판매 실적이 가장 많은 판매 대리점은?
-
+SELECT e.FirstName ||' '|| e.LastName, SUM(i.Total)
+FROM employees e
+JOIN customers c ON e.EmployeeId = c.SupportRepId
+JOIN invoices i  ON c.CustomerId = i.CustomerId
+WHERE e.Title = 'Sales Support Agent'
+GROUP BY e.EmployeeId
+HAVING SUM(i.Total) = (
+    SELECT MAX(total_sales) FROM (
+        SELECT SUM(i.Total) as total_sales
+        FROM employees e
+        JOIN customers c ON e.EmployeeId = c.SupportRepId
+        JOIN invoices i  ON c.CustomerId = i.CustomerId
+        WHERE e.Title = 'Sales Support Agent'
+        GROUP BY e.EmployeeId
+    )
+);
 -- 21. sales_agent_customer_count.sql: 각 판매 대리점에 할당된 고객 수를 보여주는 쿼리를 제공한다.
+SELECT e.FirstName ||' '|| e.LastName, COUNT(c.CustomerId)
+FROM employees e
+JOIN customers c ON e.EmployeeId = c.SupportRepId
+WHERE e.Title = 'Sales Support Agent'
+GROUP BY e.EmployeeId;
 
 -- 22. sales_per_country.sql: 국가별 총 매출을 보여주는 쿼리를 제공한다.
 
