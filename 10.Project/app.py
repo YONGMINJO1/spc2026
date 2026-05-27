@@ -24,16 +24,16 @@ history = []
 # 각 학년별 커리큘럼 데이터
 
 curriculums = {
-    1: ["기초 인사", "간단한 문장", "동물이름"],
-    2: ["학교 생활", "가족 소개", "자기소개"],
+    1: ["기초 인사", "간단한 문장", "동물 이름"],
+    2: ["학교 생활", "가족 소개", "자기 소개"],
     3: [
         "취미와 운동",
         "날씨 묘사",
         "간단한 이야기",
     ],  # 나중에 내용을 바꾸거나, 목록을 추가하거나
-    4: ["쇼핑과 가격", "음식 주문", "여행이야기 "],
+    4: ["쇼핑과 가격", "음식 주문", "여행 이야기 "],
     5: ["역사와 문화", "과학과 자연", "사회 이슈"],
-    6: ["미래 계획", "진로 탐색", "세게 여행"],
+    6: ["미래 계획", "진로 탐색", "세계 여행"],
 }
 
 
@@ -70,6 +70,7 @@ def curriculum(grade, curriculum_id):
 
 @app.route("/chat", methods=["POST"])
 def chat():
+    global history
     user_message = request.json.get("message")
     grade = request.json.get("grade")
     curriculum_title = request.json.get("curriculum_title")
@@ -78,19 +79,21 @@ def chat():
     response = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
+            # 나는 여기 뭐라고 입력해서 그 사용자의 상황에 맞는 질문을 할 것인가? 프롬프트 엔지니어링
+            # 실무적으로는, 이런 프롬프트 스테이트먼트를 별로 파일로 분리하는 것이 좋음.
             {
                 "role": "system",
                 "content": f"""
-                너는 친절한 초등학교 영어 선생님이야.
-                지금 {grade}학년 학생에게
-                '{curriculum_title}' 주제로 영어를 가르치고 있어.
+너는 친절한 초등학교 영어 선생님이야.
+지금 {grade}학년 학생에게
+'{curriculum_title}' 주제로 영어를 가르치고 있어.
 
-                반드시:
-                - 쉬운 영어 사용
-                - 짧은 문장 사용
-                - 관련 주제로만 대화
-                - 한국어 설명도 가능
-                - markdown 사용 금지
+반드시:
+- 쉬운 영어 사용
+- 짧은 문장 사용
+- 관련 주제로만 대화
+- 한국어 설명도 가능
+- markdown 사용 금지
                 """,
             }
         ]
