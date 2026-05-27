@@ -49,6 +49,7 @@
                 const summaryDiv = document.querySelector('.ai-summary');
                 summaryDiv.innerHTML = `
         <p><strong>AI 요약:</strong> ${data.message}</p>
+        <p><strong>평균 별점:</strong> ⭐ ${data.average_rating}</p>
     `;
             }
 
@@ -62,7 +63,7 @@
                 reviews.forEach((review) => {
                     container.innerHTML += `
                         <div>
-                            <p>Rating: ${review.rating}</p>
+                            <p>평점: ${review.rating}</p>
                             <p>${review.comment}</p>
                         </div>
                     `;

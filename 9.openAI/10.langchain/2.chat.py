@@ -12,7 +12,7 @@ print(llm.invoke(prompt))
 
 llm2 = ChatOpenAI(model="gpt-4o-mini")
 prompt2 = '게임 회사를 창업하려고 하는데, 이름 후보군을 지어주세요..'
-print(llm.invoke(prompt2))
+print(llm2.invoke(prompt2))
 
 from langchain_core.messages import SystemMessage,HumanMessage,AIMessage
 prompt3 = [
