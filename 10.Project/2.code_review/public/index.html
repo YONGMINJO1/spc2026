@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>코드 취약점 분석</title>
+    </head>
+    <body>
+        <h1>코드 취약점 분석</h1>
+        <form id="codeForm">
+            <input type="url" id="url" placeholder="GitHub URL을 입력하세요." />
+            <div id="vulnerabilities">
+                <label
+                    ><input type="checkbox" value="SQL Injection" /> SQL
+                    Injection</label
+                >
+                <label><input type="checkbox" value="XSS" /> XSS</label>
+                <label
+                    ><input type="checkbox" value="민감정보(하드코딩된 암호)" />
+                    민감정보(하드코딩된 암호)</label
+                >
+            </div>
+            <button type="submit">분석 시작</button>
+        </form>
+        <h2>소스 코드</h2>
+        <pre id="code"></pre>
+
+        <h2>분석 결과</h2>
+        <pre id="result"><!-- 결과가 출력 될 곳--></pre>
+
+        <script>
+            document
+                .getElementById('codeForm')
+                .addEventListener('submit', async (ev) => {
+                    ev.preventDefault();
+                    const url = document.getElementById('url').value;
+                    const result = document.getElementById('result');
+
+                    const selected = Array.from(
+                        document.querySelectorAll('input[type="checkbox"]'),
+                    )
+                        .filter((checkbox) => checkbox.checked)
+                        .map((checkbox) => checkbox.value);
+
+                    // 1.fetch로 POST로 소스코드 내용을 다 보냄
+                    const response = await fetch('/api/codecheck', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+
+                        // body: JSON.stringify({code:code}), // 원래 문법은 key, value 각각 써야하나 js가 아래처럼 축약 표현 지원
+                        body: JSON.stringify({
+                            url,
+                            vulnerabilities: selected,
+                        }),
+                    });
+                    const data = await response.json();
+                    console.log(data);
+
+                    const lines = data.code.split('\n');
+                    const numberedCode = lines
+                        .map((line, index) => `${index + 1} ${line}`)
+                        .join('\n');
+                    document.getElementById('code').innerText = numberedCode;
+                    // 2. 결과를 출력한다.
+                    result.innerText = data.result;
+                });
+        </script>
+    </body>
+</html>
