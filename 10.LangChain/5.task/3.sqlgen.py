@@ -19,7 +19,7 @@ load_dotenv()
 chat_prompt = ChatPromptTemplate.from_messages([
     ("system", "당신은 SQL전문가입니다. 순수하게 SQL 쿼리문으로만 답변하고,"
     "아무런 부가 설명도 작서하지 마시요"),
-    ("human", "DB Schema: \n\n User Query: {query}"),
+    ("human", "DB Schema: \n{schema}\n User Query: {query}"),
 ])
 
 schema = """
