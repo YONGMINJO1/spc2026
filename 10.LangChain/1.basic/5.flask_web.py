@@ -32,7 +32,7 @@ def name2():
 
     result = llm.invoke(prompt)
     names - [line.strip() for line in result.content.split('\n')]
-    return jsonify({"result":"success","chatbot": result.content})
+    return jsonify({"result":"success","chatbot": names})
 
 @app.route('/api/dinner')
 def dinner():
