@@ -4,9 +4,11 @@
 #          -> 기술지원 상담원
 # RunnableBranch
 from dotenv import load_dotenv
-from langchain_core.prompts import ChatPromptTemplate
+
 from langchain_openai import ChatOpenAI
+from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
+
 from langchain_core.runnables import RunnableBranch, RunnableLambda
 
 load_dotenv()
@@ -21,6 +23,8 @@ classifier_prompt = ChatPromptTemplate.from_messages([
     ("human","{question}")
 ])
 
+# LCEL (랭체인 익스프레스 랭귀지)
+# chain = prompt | llm | parser
 classifier_chain = classifier_prompt | llm | StrOutputParser()
 
 # 배송 상담원

@@ -4,14 +4,18 @@
 #          -> 카테고리 분석
 # RunnableParallel
 from dotenv import load_dotenv
-from langchain_core.prompts import ChatPromptTemplate
+
 from langchain_openai import ChatOpenAI
+from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
+
 from langchain_core.runnables import RunnableParallel
 
 load_dotenv()
 
 llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
+
+# chain 이란? prompt | llm | parser
 
 # 요약
 summary_prompt = ChatPromptTemplate.from_messages([
@@ -36,13 +40,14 @@ category_chain = category_prompt | llm | StrOutputParser()
 
 # 3개 체인을 병렬로 묶는다.
 # 키 이름이 최종 결과 dict의 키가 됨
-news_analyzer = RunnableParallel({
-    "요약":     summary_chain,
-    "감정분석": sentiment_chain,
-    "카테고리": category_chain,
+final_chain = RunnableParallel({
+    "summary":     summary_chain,
+    "sentiment": sentiment_chain,
+    "category": category_chain,
 })
 
-news_text = """
+# 뉴스 구해서 추가하기
+news = """
 방송미디어통신위원회는 정보통신정책연구원(KISDI)와 함께 
 2025년 지능정보사회 이용자 패널조사 결과 전체 응답자의 38.9%가 
 생성형 AI를 이용한 경험이 있는 것으로 나타났다고 밝혔다.
@@ -50,7 +55,12 @@ news_text = """
 2023년에는 12.3%였는데, 3년 연속 이용자 비중이 큰 폭으로 늘고 있다.
 """
 
-result = news_analyzer.invoke({"news": news_text})
+result = final_chain.invoke({"news": news})
+
+print(f"원문 : {"news"}")
+print(f"요약 : result{"summary"}")
+print(f"감정 : result{"sentiment"}")
+print(f"카테고리 : result{"category"}")
 
 print('-'*40)
 print("뉴스 분석 결과")
