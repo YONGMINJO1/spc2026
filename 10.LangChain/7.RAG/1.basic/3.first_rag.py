@@ -35,7 +35,7 @@ for i, doc in enumerate(results,1):
 # 검색 결과 합치기
 context = "\n".join(doc.page_content for doc in results)
 
-prompt = ChatPromptTemplate.format_messages("""
+prompt = ChatPromptTemplate.from_template("""
 아래 문서를 참고하여 질문에 답하시오.
 
 문서: 
@@ -48,6 +48,6 @@ prompt = ChatPromptTemplate.format_messages("""
 
 chain = prompt | llm 
 answer = chain.invoke({
-    "content":context,
+    "context":context,
     "question": query,
 }) 

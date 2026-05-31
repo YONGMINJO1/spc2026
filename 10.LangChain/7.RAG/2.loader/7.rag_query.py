@@ -1,5 +1,7 @@
 # pip install chromadb
 # pip install langchain-chroma
+# pip install langchain-community
+# pip langchain-text-splitters
 
 import os
 from dotenv import load_dotenv
@@ -21,7 +23,7 @@ COLLECTION_NAME = "memory"
 embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
 
 def build_store():
-    docs = TextLoader("./hdm.txt", encoding="utf-8").load()
+    docs = TextLoader("./hbm.txt", encoding="utf-8").load()
     chunks = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100).split_documents(docs)
     store = Chroma.from_documents(
         chunks, embeddings,

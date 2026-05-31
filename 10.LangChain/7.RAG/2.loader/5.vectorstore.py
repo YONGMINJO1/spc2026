@@ -42,7 +42,7 @@ else:
     store = build_store()
 
 # results = store.simliarity_search("HBM이란 무엇인가요?", k=2)
-results = store.similarity_search("hBM의 성능은 어떤가요?", k=3)
+results = store.similarity_search("HBM의 성능은 어떤가요?", k=3)
 
 for i, doc in enumerate(results, 1):
     print(f"{i}. {doc.page_content}")
