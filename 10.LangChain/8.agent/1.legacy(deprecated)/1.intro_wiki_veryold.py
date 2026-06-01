@@ -1,3 +1,5 @@
+# 에이전트를 통해서, 본연의 llm 즉 대화의 기능 외적인 기능을 쓸 수있음
+
 # pip install wikipedia
 from dotenv import load_dotenv
 
@@ -16,7 +18,7 @@ agent = initialize_agent (
     tools = tools,
     llm = llm,
     agent= AgentType.Zero_SHOT_REACT_DESCRIPTION,
-    verbose=True
+    verbose=True  # 나중에는 False 할건데, 지금은 이 에이전트의 생각을 보기 위해서...
 )
 
 result = agent.invoke("인공지능의 역사에 대해 간략히 설명해.")
