@@ -143,11 +143,37 @@ WHERE e.Title = 'Sales Support Agent'
 GROUP BY e.EmployeeId;
 
 -- 22. sales_per_country.sql: 국가별 총 매출을 보여주는 쿼리를 제공한다.
+SELECT BillingCountry, SUM(Total)
+FROM invoices
+GROUP BY BillingCountry;
 
 -- 23. top_country.sql: 고객이 가장 많이 지출한 국가는 어디입니까?
-
+SELECT BillingCountry, SUM(Total)
+FROM invoices
+GROUP BY BillingCountry
+HAVING SUM(Total) = (
+    SELECT MAX(total_sales) FROM (
+        SELECT SUM(Total) as total_sales
+        FROM invoices
+        GROUP BY BillingCountry
+    )
+);
 -- 24. top_2013_track.sql: 2013년 가장 많이 구매한 트랙을 보여주는 쿼리를 제공합니다.
-
+SELECT t.Name, COUNT(ii.TrackId)
+FROM invoice_items ii
+JOIN tracks t ON ii.TrackId = t.TrackId
+JOIN invoices i ON ii.InvoiceId = i.InvoiceId
+WHERE strftime('%Y', i.InvoiceDate) = '2013'
+GROUP BY ii.TrackId
+HAVING COUNT(ii.TrackId) = (
+    SELECT MAX(track_count) FROM (
+        SELECT COUNT(ii.TrackId) as track_count
+        FROM invoice_items ii
+        JOIN invoices i ON ii.InvoiceId = i.InvoiceId
+        WHERE strftime('%Y', i.InvoiceDate) = '2013'
+        GROUP BY ii.TrackId
+    )
+);
 -- 25. top_5_tracks.sql: 가장 많이 구매한 상위 5곡을 보여주는 쿼리를 제공합니다.
 
 -- 26. top_3_artists.sql: 가장 많이 팔린 3명의 아티스트를 보여주는 쿼리를 제공합니다.
