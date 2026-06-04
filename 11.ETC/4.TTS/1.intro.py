@@ -1,0 +1,17 @@
+import os
+import base64
+
+from openai import OpenAI
+from dotenv import load_dotenv
+
+load_dotenv()
+
+cilent = OpenAI()
+
+text = "안녕하세요, OpenAI의 음성 생성 예제입니다. 한국말을 얼마나 잘하는지 확인하는 중입니다. "
+
+response = cilent.audio.speech.create(
+    model="tts-1",
+    voice="alloy",
+    input=text
+)
