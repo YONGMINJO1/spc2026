@@ -7,14 +7,14 @@ from dotenv import load_dotenv
 
 from langchain_openai import ChatOpenAI
 from langchain_core.tools import tool
-from langchain.agents import create_agent
+# from langchain.agents import create_agent
 from langchain_core.messages import SystemMessage, HumanMessage
 
 load_dotenv()
 
 class SendEmailInput(BaseModel):
     """이메일 전송 도구의 인자"""
-    to: str = Field(description="수신자 이메일 주소(반즈기 유효한 이메일 형식)")
+    to: str = Field(description="수신자 이메일 주소(반드시 유효한 이메일 형식)")
     subject: str = Field(description="이메일 제목 (50자 이내, 간결하게)")
     body: str = Field(description="이메일 본문 (반드시 한국어로 작성)")
     priority: Literal["low","normal","high"] = Field(default="normal",description="우선순위, urgent한 경우 high 사용")
@@ -22,7 +22,7 @@ class SendEmailInput(BaseModel):
 @tool(args_schema=SendEmailInput)
 def send_email(to:str,subject: str, body:str, priority: str="normal")-> str:
     """사용자가 요청할때 이메일을 보낸다."""
-    print(f"[가짜 전송] to={to}, priority= {property}")
+    print(f"[가짜 전송] to={to}, priority= {priority}")
     print(f"제목: {subject}")
     print(f"본문: {body}")
     return f"이메일이 {to}에게 전송되었습니다. (priority)={priority}"
@@ -30,9 +30,9 @@ def send_email(to:str,subject: str, body:str, priority: str="normal")-> str:
 class SearchInput(BaseModel):
     """검색 도구의 인자"""
     query: str = Field(description="검색어")
-    max_result: int = Field(default=5, ge=1, le=20, description="결과 갯수 (1~20)")
+    max_results: int = Field(default=5, ge=1, le=20, description="결과 갯수 (1~20)")
 
-    sort_by : Literal["relevance","data"] = Field(default="relevence", description="정렬 기준, 최진 정보가 중요하면 data 사용")
+    sort_by : Literal["relevance","date"] = Field(default="relevance", description="정렬 기준, 최신 정보가 중요하면 date 사용")
 
 @tool(args_schema=SearchInput)
 def search(query:str, max_results: int = 5, sort_by: str = "relevance")-> list[str]:
@@ -44,7 +44,7 @@ llm = ChatOpenAI(model="gpt-4o-mini")
 llm_with_tools = llm.bind_tools([send_email, search])
 
 print(f"=== 도구 명세 살펴보기 ===")
-print(json.dumps(send_email.args_schema.model_json_schema(), input=2, ensure_ascii=False))
+print(json.dumps(send_email.args_schema.model_json_schema(), indent=2, ensure_ascii=False))
 
 print(f"=== 도구 실제 호출 ===")
 
@@ -57,7 +57,7 @@ questions = [
 ]
 
 SYSTEM = (
-    "도구는 적합할 때만 사용하세요. 그리고 입력 인자들을 잘 확인하고, 오류가 없도록 호출하시오. 호출 이후 오류가 발생한 경후 도구의 목적과 인자값을 잘 확인하고 재시도 하시오. 그러나 재시도는 최대 2회만 하시오. 적합한 도구를 발견하지 못했을 경우, '해당 작업을 수행할 수 있는 도구가 없습니다.'라고 답변한다."
+    "도구는 적합할 때만 사용하세요. 그리고 입력 인자들을 잘 확인하고, 오류가 없도록 호출하시오. 호출 이후 오류가 발생한 경우 도구의 목적과 인자값을 잘 확인하고 재시도 하시오. 그러나 재시도는 최대 2회만 하시오. 적합한 도구를 발견하지 못했을 경우, '해당 작업을 수행할 수 있는 도구가 없습니다.'라고 답변한다."
 )
 
 for q in questions:
@@ -71,6 +71,6 @@ for q in questions:
             print(f"-> {call['name']}({call['args']})")
 
             # 실제 실행을 원하면?
-            name2tool = {t.name: t for tb in [send_email,search]}
+            name2tool = {t.name: t for t in [send_email,search]}
             result = name2tool[call['name']].invoke(call["args"])
-            print(f" 결괔; {result}")
+            print(f" 결과; {result}")
