@@ -12,25 +12,37 @@ from langchain_core.output_parsers import StrOutputParser
 load_dotenv()
 
 DB_DIR = "./chroma_db"
+splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100)
 
-embaddings = OpenAIEmbeddings(model="text-embedding-3-small")
+embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
 llm = ChatOpenAI(model="gpt-4o-mini")
 
 hbm_store = Chroma(
     collection_name="memory",
-    embedding_function=embaddings,
+    embedding_function=embeddings,
     persist_directory=DB_DIR,
 )
 
 nvme_store = Chroma(
     collection_name="nvme",
-    embedding_function=embaddings,
+    embedding_function=embeddings,
     persist_directory=DB_DIR,
 )
 
 hbm_retriever = hbm_store.as_retriever(search_kwargs={"k": 2})
 nvme_retriever = nvme_store.as_retriever(search_kwargs={"k": 2})
 
+def bulid_hbm_store():
+    return "미구현"
+
+def load_hbm_store():
+    return "미구현"
+
+def build_nvme_store():
+    return '미구현'
+
+def load_nvme_store():
+    return '미구현'
 
 def format_docs(docs):
     return "\n\n".join(d.page_content for d in docs)
