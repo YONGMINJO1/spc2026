@@ -1,0 +1,19 @@
+=== MCP Proxy Debug Log ===
+[PROXY] 서버 시작: 2.mcp_server
+[PROXY] 메시지 중계 시작
+
+[C->S] {
+  "method": "initialize",
+  "params": {
+    "protocolVersion": "2025-11-25",
+    "capabilities": {},
+    "clientInfo": {
+      "name": "mcp",
+      "version": "0.1.0"
+    }
+  },
+  "jsonrpc": "2.0",
+  "id": 0
+}
+[SERVER_OUTPUT] python: can't open file 'C:\\SPC2026\\12.ANTHROPIC\\3.mcp\\2.mcp_server': [Errno 2] No such file or directory
+[PROXY] 종료
